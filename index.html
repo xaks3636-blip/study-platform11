@@ -92,7 +92,7 @@
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-16 gap-2">
                 <!-- Brand Title -->
-                <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse min-w-0">
+                <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse min-w-0 cursor-pointer" onclick="resetToHome()">
                     <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-brand-600 flex items-center justify-center font-bold text-lg sm:text-xl text-white shadow-lg shadow-brand-600/30 shrink-0">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
                             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
@@ -104,8 +104,13 @@
                     </div>
                 </div>
 
-                <!-- Actions -->
-                <div class="flex items-center space-x-1.5 sm:space-x-2 space-x-reverse shrink-0">
+                <!-- Global Flexible Search & Actions -->
+                <div class="flex items-center space-x-2 space-x-reverse shrink-0">
+                    <div class="relative hidden md:block w-48 lg:w-64">
+                        <input type="text" id="global-search" placeholder="بحث ذكي عن أي محاضرة..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg pr-8 pl-3 py-1.5 focus:outline-none focus:border-brand-500 transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 absolute right-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+
                     <!-- Theme Toggle Button -->
                     <button id="btn-theme-toggle" class="p-2 sm:p-2.5 rounded-lg bg-slate-200 dark:bg-surface-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-700" title="تبديل الوضع الليلي / النهار">
                         <svg id="icon-sun" class="w-4 h-4 sm:w-5 sm:h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -135,7 +140,7 @@
             <!-- Search filter inside Channels -->
             <div class="relative mb-2.5">
                 <input type="text" id="channel-search" placeholder="بحث عن مدرس أو مادة..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg pr-8 pl-3 py-1.5 sm:py-2 focus:outline-none focus:border-brand-500 transition-colors">
-                <svg class="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-2.5 top-2 sm:top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <svg class="w-4 h-4 text-slate-400 absolute right-2.5 top-2 sm:top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
             <!-- Channels List Container -->
@@ -147,19 +152,20 @@
         <!-- Main Workspace (Video Player & Grid) -->
         <main class="lg:col-span-3 space-y-4 sm:space-y-6">
 
-            <!-- Video Player Display Container -->
-            <section id="player-section" class="bg-white dark:bg-surface-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl sm:shadow-2xl">
+            <!-- Video Player Display Container (Hidden by default until a video is selected) -->
+            <section id="player-section" class="hidden bg-white dark:bg-surface-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl sm:shadow-2xl">
                 <div id="video-embed-container" class="aspect-video-container bg-black flex items-center justify-center">
-                    <div id="no-video-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-slate-500">
-                        <svg class="w-12 h-12 sm:w-16 sm:h-16 mb-2 sm:mb-4 text-slate-400 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p class="text-sm sm:text-base font-semibold text-slate-600 dark:text-slate-400">اختر درساً للبدء في المشاهدة والمتابعة</p>
-                        <p class="text-[11px] sm:text-xs text-slate-400 dark:text-slate-600 mt-1">اضغط على أي فيديو من القائمة المتاحة بالأسفل</p>
-                    </div>
-                    <iframe id="youtube-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="hidden"></iframe>
+                    <iframe id="youtube-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
-                <div class="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-900">
-                    <h2 id="active-video-title" class="text-xs sm:text-base font-bold text-slate-900 dark:text-slate-100 line-clamp-2">لم يتم تحديد فيديو</h2>
-                    <p id="active-video-channel" class="text-[11px] sm:text-xs text-brand-600 dark:text-brand-500 mt-0.5 sm:mt-1 font-medium">-</p>
+                <div class="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div>
+                        <h2 id="active-video-title" class="text-xs sm:text-base font-bold text-slate-900 dark:text-slate-100 line-clamp-2">لم يتم تحديد فيديو</h2>
+                        <p id="active-video-channel" class="text-[11px] sm:text-xs text-brand-600 dark:text-brand-500 mt-0.5 sm:mt-1 font-medium">-</p>
+                    </div>
+                    <button id="btn-toggle-complete" class="bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span id="complete-btn-text">تحديد كمكتمل</span>
+                    </button>
                 </div>
             </section>
 
@@ -179,26 +185,24 @@
                 </button>
             </section>
 
-            <!-- Video Cards Section -->
+            <!-- Video Cards Section / YouTube Style Feed -->
             <section class="space-y-3 sm:space-y-4">
                 <!-- Search & Filters Header -->
                 <div class="flex flex-col gap-3 sm:gap-4 bg-white dark:bg-surface-900 p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
                         <div>
-                            <h3 id="current-view-title" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">الدروس المتاحة</h3>
-                            <p id="current-view-subtitle" class="text-[11px] sm:text-xs text-slate-500">جميع الفيديوهات التعليمية المسجلة</p>
-                        </div>
-                        <div class="relative w-full md:w-64 lg:w-72">
-                            <input type="text" id="video-search" placeholder="بحث في عناوين الدروس..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg pr-8 pl-3 py-1.5 sm:py-2 focus:outline-none focus:border-brand-500 transition-colors">
-                            <svg class="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-2.5 top-2 sm:top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <h3 id="current-view-title" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">اقتراحات القنوات والدروس</h3>
+                            <p id="current-view-subtitle" class="text-[11px] sm:text-xs text-slate-500">أحدث المحاضرات والملخصات من القنوات المضافة</p>
                         </div>
                     </div>
 
-                    <!-- Content Sub-tabs (Videos / Playlists / Shorts) -->
+                    <!-- Content Sub-tabs (Home Feed / Videos / Playlists / Shorts / Completed) -->
                     <div id="content-tabs" class="flex items-center space-x-1.5 sm:space-x-2 space-x-reverse pt-2 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold overflow-x-auto pb-1">
-                        <button data-tab="videos" class="tab-btn active px-3 py-1.5 rounded-lg bg-brand-600 text-white transition-all whitespace-nowrap">الفيديوهات</button>
+                        <button data-tab="feed" class="tab-btn active px-3 py-1.5 rounded-lg bg-brand-600 text-white transition-all whitespace-nowrap">الرئيسية (اقتراحات)</button>
+                        <button data-tab="videos" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الفيديوهات</button>
                         <button data-tab="playlists" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">قوائم التشغيل</button>
-                        <button data-tab="shorts" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الشورتس (Shorts)</button>
+                        <button data-tab="shorts" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الشورتس</button>
+                        <button data-tab="completed" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">المكتبة (المكتملة)</button>
                     </div>
                 </div>
 
@@ -255,19 +259,20 @@
 
     <!-- Main Logic Script -->
     <script>
-        // Application State Management with Built-in Backend API Key
+        // Application State Management
         let state = {
             apiKey: "AIzaSyAi-Xxn39YN3tKb0_5Z2P3qCiRAaBFF6Y8",
             channels: JSON.parse(localStorage.getItem('yt_study_channels') || '[]'),
+            completedVideos: JSON.parse(localStorage.getItem('yt_study_completed') || '[]'),
             selectedChannelId: null,
-            activeTab: 'videos',
+            activeTab: 'feed', // Default tab is YouTube-like home feed recommendations
             videos: [],
             playlists: [],
             shorts: [],
             activeVideoId: localStorage.getItem('yt_study_last_video_id') || null,
             nextSuggestedVideo: null,
             channelSearchQuery: '',
-            videoSearchQuery: '',
+            globalSearchQuery: '',
             channelPageTokens: {}, 
             hasMore: false,
             isLoadingMore: false
@@ -281,8 +286,8 @@
             loadingSpinner: document.getElementById('loading-spinner'),
             loadMoreContainer: document.getElementById('load-more-container'),
             btnLoadMore: document.getElementById('btn-load-more'),
+            playerSection: document.getElementById('player-section'),
             iframe: document.getElementById('youtube-iframe'),
-            noVideoPlaceholder: document.getElementById('no-video-placeholder'),
             activeVideoTitle: document.getElementById('active-video-title'),
             activeVideoChannel: document.getElementById('active-video-channel'),
             currentViewTitle: document.getElementById('current-view-title'),
@@ -294,27 +299,28 @@
             addChannelError: document.getElementById('add-channel-error'),
             btnSubmitChannel: document.getElementById('btn-submit-channel'),
             channelSearch: document.getElementById('channel-search'),
-            videoSearch: document.getElementById('video-search'),
+            globalSearch: document.getElementById('global-search'),
             btnThemeToggle: document.getElementById('btn-theme-toggle'),
             iconSun: document.getElementById('icon-sun'),
             iconMoon: document.getElementById('icon-moon'),
             nextVideoBanner: document.getElementById('next-video-suggestion'),
             nextVideoTitle: document.getElementById('next-video-title'),
-            btnPlayNext: document.getElementById('btn-play-next')
+            btnPlayNext: document.getElementById('btn-play-next'),
+            btnToggleComplete: document.getElementById('btn-toggle-complete'),
+            completeBtnText: document.getElementById('complete-btn-text')
         };
 
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
             renderChannelsList();
-            
-            // Fetch content immediately using the embedded key
             fetchAllContent();
 
             // Setup Event Listeners
             document.getElementById('btn-add-channel').addEventListener('click', () => openModal(elements.modalAddChannel));
             elements.btnLoadMore.addEventListener('click', () => fetchMoreContent());
             elements.btnThemeToggle.addEventListener('click', toggleTheme);
+            elements.btnToggleComplete.addEventListener('click', toggleCompleteActiveVideo);
 
             document.querySelectorAll('.btn-close-modal').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -329,8 +335,9 @@
                 renderChannelsList();
             });
 
-            elements.videoSearch.addEventListener('input', (e) => {
-                state.videoSearchQuery = e.target.value.toLowerCase();
+            // Flexible Global Search (Matches keywords in any order)
+            elements.globalSearch.addEventListener('input', (e) => {
+                state.globalSearchQuery = e.target.value.toLowerCase().trim();
                 renderCurrentGrid();
             });
 
@@ -356,6 +363,28 @@
             });
         });
 
+        // Reset to Home Feed
+        function resetToHome() {
+            state.selectedChannelId = null;
+            state.activeTab = 'feed';
+            renderChannelsList();
+            
+            // Reset tab buttons visually to feed
+            document.querySelectorAll('#content-tabs .tab-btn').forEach(b => {
+                if (b.getAttribute('data-tab') === 'feed') {
+                    b.classList.add('bg-brand-600', 'text-white');
+                    b.classList.remove('bg-slate-100', 'dark:bg-surface-800', 'text-slate-600', 'dark:text-slate-300');
+                } else {
+                    b.classList.remove('bg-brand-600', 'text-white');
+                    b.classList.add('bg-slate-100', 'dark:bg-surface-800', 'text-slate-600', 'dark:text-slate-300');
+                }
+            });
+
+            elements.currentViewTitle.innerText = "اقتراحات القنوات والدروس (الرئيسية)";
+            elements.currentViewSubtitle.innerText = "أحدث المحاضرات والملخصات من القنوات المضافة";
+            renderCurrentGrid();
+        }
+
         // Theme Toggle Logic
         function initTheme() {
             const savedTheme = localStorage.getItem('yt_study_theme') || 'dark';
@@ -366,7 +395,7 @@
             } else {
                 document.documentElement.classList.remove('dark');
                 elements.iconSun.classList.add('hidden');
-                elements.iconMoon.classList.remove('hidden');
+                elements.iconMoon.classList.add('hidden');
             }
         }
 
@@ -493,10 +522,10 @@
             allBtn.innerHTML = `
                 <div class="flex items-center space-x-2 space-x-reverse">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    <span class="text-xs">جميع المواد والدروس</span>
+                    <span class="text-xs">الرئيسية (جميع المواد)</span>
                 </div>
             `;
-            allBtn.onclick = () => selectChannel(null);
+            allBtn.onclick = () => resetToHome();
             elements.channelsList.appendChild(allBtn);
 
             const filtered = state.channels.filter(c => 
@@ -539,9 +568,6 @@
                 const ch = state.channels.find(c => c.id === channelId);
                 elements.currentViewTitle.innerText = `مادة/مدرس: ${ch.teacherName}`;
                 elements.currentViewSubtitle.innerText = `قناة: ${ch.channelTitle}`;
-            } else {
-                elements.currentViewTitle.innerText = 'الدروس المتاحة';
-                elements.currentViewSubtitle.innerText = 'جميع الفيديوهات التعليمية المسجلة';
             }
 
             fetchAllContent();
@@ -634,8 +660,6 @@
 
         // Fetch All Content
         async function fetchAllContent() {
-            if (!state.apiKey) return;
-
             elements.loadingSpinner.classList.remove('hidden');
             elements.loadMoreContainer.classList.add('hidden');
             elements.videosGrid.innerHTML = '';
@@ -676,9 +700,12 @@
 
             renderCurrentGrid();
 
+            // Restore last watched video state if available in storage (without autoplaying on load)
             if (state.activeVideoId) {
                 const found = state.videos.find(v => v.id === state.activeVideoId);
-                if (found) playVideo(found.id, found.title, found.teacherName);
+                if (found) {
+                    // Pre-fill active details without forcing autoplay on fresh home visit
+                }
             }
         }
 
@@ -743,23 +770,58 @@
             return foundNext || null;
         }
 
-        // Render Active Grid
+        // Toggle Complete Status for Active Video
+        function toggleCompleteActiveVideo() {
+            if (!state.activeVideoId) return;
+            const index = state.completedVideos.indexOf(state.activeVideoId);
+            if (index > -1) {
+                state.completedVideos.splice(index, 1);
+            } else {
+                state.completedVideos.push(state.activeVideoId);
+            }
+            localStorage.setItem('yt_study_completed', JSON.stringify(state.completedVideos));
+            updateCompleteButtonState();
+            renderCurrentGrid();
+        }
+
+        function updateCompleteButtonState() {
+            const isCompleted = state.completedVideos.includes(state.activeVideoId);
+            if (isCompleted) {
+                elements.btnToggleComplete.className = "bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 shadow";
+                elements.completeBtnText.innerText = "مكتمل ✓";
+            } else {
+                elements.btnToggleComplete.className = "bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0";
+                elements.completeBtnText.innerText = "تحديد كمكتمل";
+            }
+        }
+
+        // Render Active Grid with Flexible Search (multi-word support)
         function renderCurrentGrid() {
             elements.videosGrid.innerHTML = '';
 
             let listToRender = [];
-            if (state.activeTab === 'videos') listToRender = state.videos;
+            if (state.activeTab === 'feed' || state.activeTab === 'videos') listToRender = state.videos;
             else if (state.activeTab === 'shorts') listToRender = state.shorts;
             else if (state.activeTab === 'playlists') listToRender = state.playlists;
+            else if (state.activeTab === 'completed') {
+                listToRender = state.videos.filter(v => state.completedVideos.includes(v.id));
+            }
 
-            const filtered = listToRender.filter(item => 
-                (item.title || '').toLowerCase().includes(state.videoSearchQuery)
-            );
+            // Flexible Multi-word Search Filter
+            const query = state.globalSearchQuery;
+            const filtered = listToRender.filter(item => {
+                if (!query) return true;
+                const title = (item.title || '').toLowerCase();
+                const teacher = (item.teacherName || '').toLowerCase();
+                const queryWords = query.split(/\s+/);
+                return queryWords.every(word => title.includes(word) || teacher.includes(word));
+            });
 
             if (filtered.length === 0) {
                 elements.videosGrid.innerHTML = `
-                    <div class="col-span-full py-8 sm:py-12 text-center bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-xl">
-                        <p class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400">لا يوجد محتوى لعرضه في هذا القسم</p>
+                    <div class="col-span-full py-12 text-center bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                        <svg class="w-12 h-12 mx-auto text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400">لا توجد نتائج مطابقة لبحثك أو في هذا القسم</p>
                     </div>
                 `;
                 return;
@@ -786,12 +848,14 @@
 
             filtered.forEach(video => {
                 const isPlaying = state.activeVideoId === video.id;
+                const isCompleted = state.completedVideos.includes(video.id);
                 const card = document.createElement('div');
-                card.className = `bg-white dark:bg-surface-900 rounded-xl overflow-hidden border ${isPlaying ? 'border-brand-500 shadow-lg shadow-brand-500/10' : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700'} transition-all cursor-pointer flex flex-col group shadow-sm`;
+                card.className = `bg-white dark:bg-surface-900 rounded-xl overflow-hidden border ${isPlaying ? 'border-brand-500 shadow-lg shadow-brand-500/10' : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700'} transition-all cursor-pointer flex flex-col group shadow-sm relative`;
 
                 card.innerHTML = `
                     <div class="relative ${state.activeTab === 'shorts' ? 'aspect-[9/16] max-h-60 sm:max-h-72 mx-auto w-full' : 'aspect-video'} bg-slate-950 overflow-hidden">
                         <img src="${video.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        ${isCompleted ? '<span class="absolute top-2 right-2 bg-green-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">مكتمل ✓</span>' : ''}
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-lg">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -817,12 +881,13 @@
             state.activeVideoId = videoId;
             localStorage.setItem('yt_study_last_video_id', videoId);
 
-            elements.noVideoPlaceholder.classList.add('hidden');
-            elements.iframe.classList.remove('hidden');
+            elements.playerSection.classList.remove('hidden');
             elements.iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 
             elements.activeVideoTitle.innerText = title;
             elements.activeVideoChannel.innerText = `المدرس/المادة: ${teacherName}`;
+
+            updateCompleteButtonState();
 
             const nextSuggested = findNextLectureSuggestion(title, teacherName);
             if (nextSuggested) {
@@ -835,9 +900,8 @@
 
             renderCurrentGrid();
 
-            if (window.innerWidth < 1024) {
-                document.getElementById('player-section').scrollIntoView({ behavior: 'smooth' });
-            }
+            // Auto-scroll smoothly to player section on click
+            elements.playerSection.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
