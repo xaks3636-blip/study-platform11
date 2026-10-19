@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة أحمد بن علي التعليمية</title>
+    <!-- Favicon / App Icon fix -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <!-- PWA Manifest Data URI -->
+    <link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name": "منصة أحمد بن علي التعليمية", "short_name": "منصة أحمد", "start_url": "./", "display": "standalone", "background_color": "#0f172a", "theme_color": "#1d4ed8", "icons": [{"src": "https://via.placeholder.com/192.png", "sizes": "192x192", "type": "image/png"}]}'>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
@@ -99,13 +104,19 @@
                 </div>
             </div>
 
-            <!-- Quick Navigation Switcher & Theme Toggle -->
+            <!-- Quick Navigation Switcher & Actions -->
             <div class="flex items-center gap-2">
                 <div class="hidden sm:flex bg-slate-100 dark:bg-surface-800 p-1 rounded-xl gap-1 text-xs font-semibold">
                     <button onclick="switchSection('home')" id="nav-btn-home" class="px-3 py-1.5 rounded-lg transition-all bg-white dark:bg-surface-900 text-brand-600 shadow-sm">الرئيسية</button>
                     <button onclick="switchSection('youtube')" id="nav-btn-youtube" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-600">يوتيوب بدون تشتيت</button>
                     <button onclick="switchSection('vocab')" id="nav-btn-vocab" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-600">المفردات الإنجليزية</button>
                 </div>
+
+                <!-- PWA Install Button -->
+                <button id="btn-install-app" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition-all items-center gap-1.5 shadow-md shrink-0">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="hidden xs:inline">تثبيت التطبيق</span>
+                </button>
                 
                 <!-- Theme Toggle Button -->
                 <button id="btn-theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700" title="تبديل الوضع الليلي / النهار">
@@ -227,9 +238,9 @@
                         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-semibold border-t border-slate-100 dark:border-slate-800 pt-2">
                             <button onclick="switchYTTab('feed')" id="yt-tab-feed" class="yt-tab active px-3 py-1.5 rounded-xl bg-brand-600 text-white whitespace-nowrap">الرئيسية</button>
                             <button onclick="switchYTTab('videos')" id="yt-tab-videos" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">الفيديوهات</button>
-                            <button onclick="switchYTTab('playlists')" id="yt-tab-playlists" class="yt-tab px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">قوائم التشغيل</button>
-                            <button onclick="switchYTTab('shorts')" id="yt-tab-shorts" class="yt-tab px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">الشورتس</button>
-                            <button onclick="switchYTTab('completed')" id="yt-tab-completed" class="yt-tab px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">المكتملة ✓</button>
+                            <button onclick="switchYTTab('playlists')" id="yt-tab-playlists" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">قوائم التشغيل</button>
+                            <button onclick="switchYTTab('shorts')" id="yt-tab-shorts" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">الشورتس</button>
+                            <button onclick="switchYTTab('completed')" id="yt-tab-completed" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">المكتملة ✓</button>
                         </div>
                     </div>
 
@@ -251,10 +262,10 @@
                     <p class="text-xs text-slate-500">طور حصيلتك اللغوية واختبر نفسك</p>
                 </div>
                 <div class="flex bg-slate-100 dark:bg-surface-800 p-1 rounded-xl gap-1 text-xs font-semibold">
-                    <button onclick="switchVocabTab('manage')" id="vocab-tab-manage" class="px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm">
+                    <button onclick="switchVocabTab('manage')" id="vocab-tab-manage" class="px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm transition-all">
                         <i class="fa-solid fa-book-open ml-1"></i> الكلمات (<span id="word-count-badge">0</span>)
                     </button>
-                    <button onclick="switchVocabTab('quiz')" id="vocab-tab-quiz" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600">
+                    <button onclick="switchVocabTab('quiz')" id="vocab-tab-quiz" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 transition-all">
                         <i class="fa-solid fa-gamepad ml-1"></i> الاختبار
                     </button>
                 </div>
@@ -363,6 +374,32 @@
 
     <!-- Integrated Script -->
     <script>
+        // --- PWA INSTALL PROMPT LOGIC ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('btn-install-app');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.remove('hidden');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                showToast('تم بدء تثبيت التطبيق بنجاح!');
+            }
+            deferredPrompt = null;
+            installBtn.classList.add('hidden');
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.add('hidden');
+            showToast('تم تثبيت التطبيق على جهازك!');
+        });
+
         // --- GLOBAL & APP STATE ---
         const apiKey = "AIzaSyAi-Xxn39YN3tKb0_5Z2P3qCiRAaBFF6Y8";
         let ytState = {
@@ -414,12 +451,25 @@
             });
         });
 
-        // --- SECTION NAVIGATION ---
+        // --- SECTION NAVIGATION & HEADER NAV HIGHLIGHTING ---
         function switchSection(sectionName) {
             ['home', 'youtube', 'vocab'].forEach(sec => {
                 document.getElementById(`sec-${sec}`).classList.add('hidden');
             });
             document.getElementById(`sec-${sectionName}`).classList.remove('hidden');
+
+            // Update header nav active states
+            ['home', 'youtube', 'vocab'].forEach(sec => {
+                const btn = document.getElementById(`nav-btn-${sec}`);
+                if (btn) {
+                    if (sec === sectionName) {
+                        btn.className = "px-3 py-1.5 rounded-lg transition-all bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-600 text-xs font-semibold";
+                    }
+                }
+            });
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -557,6 +607,22 @@
             });
         }
 
+        async function fetchChannelPlaylists(channelId) {
+            try {
+                const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channelId}&maxResults=25&key=${apiKey}`);
+                const data = await res.json();
+                if (data.items) {
+                    return data.items.map(item => ({
+                        id: item.id,
+                        title: item.snippet.title,
+                        itemCount: item.contentDetails?.itemCount || 0,
+                        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || ''
+                    }));
+                }
+            } catch (e) { console.error(e); }
+            return [];
+        }
+
         async function fetchPlaylistPage(playlistId, teacherName) {
             let fetched = { videos: [], shorts: [] };
             try {
@@ -586,16 +652,47 @@
             return fetched;
         }
 
+        async function loadPlaylistVideos(playlistId, playlistTitle) {
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            document.getElementById('videos-grid').innerHTML = '';
+            try {
+                const res = await fetchPlaylistPage(playlistId, playlistTitle);
+                ytState.videos = res.videos;
+                ytState.shorts = res.shorts;
+                ytState.activeTab = 'videos';
+
+                document.querySelectorAll('.yt-tab').forEach(b => {
+                    b.className = "yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap text-xs";
+                });
+                const vidTab = document.getElementById('yt-tab-videos');
+                if(vidTab) vidTab.className = "yt-tab px-3 py-1.5 rounded-xl bg-brand-600 text-white whitespace-nowrap text-xs";
+
+                document.getElementById('current-view-title').textContent = `قائمة التشغيل: ${playlistTitle}`;
+                document.getElementById('current-view-subtitle').textContent = 'فيديوهات قائمة التشغيل المحددة';
+                renderYTVideosGrid();
+            } catch (e) {
+                console.error(e);
+            } finally {
+                document.getElementById('loading-spinner').classList.add('hidden');
+            }
+        }
+
         async function fetchAllYTContent() {
             document.getElementById('loading-spinner').classList.remove('hidden');
             ytState.videos = [];
             ytState.shorts = [];
+            ytState.playlists = [];
 
             const targets = ytState.selectedChannelId ? ytState.channels.filter(c => c.id === ytState.selectedChannelId) : ytState.channels;
             for (const ch of targets) {
                 const res = await fetchPlaylistPage(ch.uploadsPlaylistId, ch.teacherName);
                 ytState.videos = ytState.videos.concat(res.videos);
                 ytState.shorts = ytState.shorts.concat(res.shorts);
+
+                if (ytState.selectedChannelId) {
+                    const pls = await fetchChannelPlaylists(ch.id);
+                    ytState.playlists = ytState.playlists.concat(pls);
+                }
             }
             ytState.videos.sort((a, b) => b.rawDate - a.rawDate);
             ytState.shorts.sort((a, b) => b.rawDate - a.rawDate);
@@ -620,7 +717,34 @@
             let list = [];
             if (ytState.activeTab === 'feed' || ytState.activeTab === 'videos') list = ytState.videos;
             else if (ytState.activeTab === 'shorts') list = ytState.shorts;
+            else if (ytState.activeTab === 'playlists') list = ytState.playlists;
             else if (ytState.activeTab === 'completed') list = ytState.videos.filter(v => ytState.completedVideos.includes(v.id));
+
+            // If playlists tab is active
+            if (ytState.activeTab === 'playlists') {
+                const query = ytState.globalSearchQuery;
+                const filteredPls = ytState.playlists.filter(p => !query || p.title.toLowerCase().includes(query));
+                if (filteredPls.length === 0) {
+                    grid.innerHTML = `<div class="col-span-full py-12 text-center text-xs text-slate-500">لا توجد قوائم تشغيل متاحة (اختر قناة معينة من القائمة الجانبية لعرض قوائم التشغيل الخاصة بها)</div>`;
+                    return;
+                }
+                filteredPls.forEach(pl => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white dark:bg-surface-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 p-3 flex flex-col justify-between space-y-2 shadow-sm hover:border-brand-500 cursor-pointer transition-all group";
+                    card.innerHTML = `
+                        <div class="relative aspect-video rounded-xl overflow-hidden bg-black">
+                            <img src="${pl.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute bottom-2 left-2 bg-black/80 text-white text-[10px] px-2 py-0.5 rounded font-bold">
+                                ${pl.itemCount} فيديو
+                            </div>
+                        </div>
+                        <h4 class="text-xs font-bold line-clamp-2 group-hover:text-brand-600 transition-colors">${pl.title}</h4>
+                    `;
+                    card.onclick = () => loadPlaylistVideos(pl.id, pl.title);
+                    grid.appendChild(card);
+                });
+                return;
+            }
 
             const query = ytState.globalSearchQuery;
             const filtered = list.filter(item => {
@@ -690,7 +814,7 @@
             document.getElementById('complete-btn-text').textContent = isComp ? "مكتمل ✓" : "تحديد كمكتمل";
         }
 
-        // --- VOCABULARY PLATFORM LOGIC (from attached file) ---
+        // --- VOCABULARY PLATFORM LOGIC ---
         function switchVocabTab(tab) {
             const manageSec = document.getElementById('vocab-section-manage');
             const quizSec = document.getElementById('vocab-section-quiz');
@@ -700,14 +824,14 @@
             if (tab === 'manage') {
                 manageSec.classList.remove('hidden');
                 quizSec.classList.add('hidden');
-                tabManage.className = "px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold";
-                tabQuiz.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold";
+                tabManage.className = "px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold transition-all";
+                tabQuiz.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold hover:text-brand-600 transition-all";
                 renderVocabWords();
             } else {
                 manageSec.classList.add('hidden');
                 quizSec.classList.remove('hidden');
-                tabQuiz.className = "px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold";
-                tabManage.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold";
+                tabQuiz.className = "px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold transition-all";
+                tabManage.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold hover:text-brand-600 transition-all";
                 if (vocabState.words.length < 2) {
                     showToast('يجب إدخال كلمتين على الأقل لبدء الاختبار!', 'error');
                     switchVocabTab('manage');
