@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة أحمد بن علي التعليمية</title>
-    <!-- Favicon / App Icon fix -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
-    <!-- PWA Manifest Data URI -->
-    <link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name": "منصة أحمد بن علي التعليمية", "short_name": "منصة أحمد", "start_url": "./", "display": "standalone", "background_color": "#0f172a", "theme_color": "#1d4ed8", "icons": [{"src": "https://via.placeholder.com/192.png", "sizes": "192x192", "type": "image/png"}]}'>
-    
+    <title>منصة الدراسة التعليمية - متابعة الدروس بدون تشويش</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
+                screens: {
+                    'xs': '475px',
+                    'sm': '640px',
+                    'md': '768px',
+                    'lg': '1024px',
+                    'xl': '1280px',
+                    '2xl': '1536px',
+                },
                 extend: {
                     colors: {
                         brand: {
@@ -65,12 +66,8 @@
             background: #334155;
             border-radius: 4px;
         }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
         }
         .aspect-video-container {
             position: relative;
@@ -86,888 +83,991 @@
             height: 100%;
             border: 0;
         }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-900 dark:bg-surface-950 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- Global Header -->
-    <header class="bg-white dark:bg-surface-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
-            <!-- Brand Title & Blue Logo -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="switchSection('home')">
-                <div class="w-10 h-10 rounded-2xl bg-brand-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-brand-600/30">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <div>
-                    <h1 class="text-base sm:text-lg font-black bg-gradient-to-r from-brand-600 to-blue-500 bg-clip-text text-transparent">منصة أحمد بن علي</h1>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400">بوابة التعلم المتكاملة</p>
-                </div>
+    <!-- WELCOME SPLASH SCREEN -->
+    <div id="welcome-screen" class="fixed inset-0 z-50 bg-slate-100 dark:bg-surface-950 flex flex-col items-center justify-center p-4 text-center fade-in">
+        <div class="max-w-md w-full bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
+            
+            <!-- Badge above Logo -->
+            <div>
+                <span class="inline-block bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider mb-2">
+                    منهج 2027 المحدث
+                </span>
             </div>
 
-            <!-- Quick Navigation Switcher & Actions -->
-            <div class="flex items-center gap-2">
-                <div class="hidden sm:flex bg-slate-100 dark:bg-surface-800 p-1 rounded-xl gap-1 text-xs font-semibold">
-                    <button onclick="switchSection('home')" id="nav-btn-home" class="px-3 py-1.5 rounded-lg transition-all bg-white dark:bg-surface-900 text-brand-600 shadow-sm">الرئيسية</button>
-                    <button onclick="switchSection('youtube')" id="nav-btn-youtube" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-600">يوتيوب بدون تشتيت</button>
-                    <button onclick="switchSection('vocab')" id="nav-btn-vocab" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-600">المفردات الإنجليزية</button>
-                </div>
-
-                <!-- PWA Install Button -->
-                <button id="btn-install-app" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition-all items-center gap-1.5 shadow-md shrink-0">
-                    <i class="fa-solid fa-download"></i>
-                    <span class="hidden xs:inline">تثبيت التطبيق</span>
-                </button>
-                
-                <!-- Theme Toggle Button -->
-                <button id="btn-theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700" title="تبديل الوضع الليلي / النهار">
-                    <svg id="icon-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    <svg id="icon-moon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                </button>
+            <!-- Crisp Square Blue High Resolution Logo -->
+            <div class="w-16 h-16 rounded-2xl bg-brand-600 flex items-center justify-center font-bold text-white shadow-xl shadow-brand-600/30 mx-auto shrink-0">
+                <svg class="w-9 h-9 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                </svg>
             </div>
+
+            <div class="space-y-2">
+                <h1 class="text-2xl font-black text-slate-900 dark:text-white">منصة أحمد بن علي التعليمية</h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">منصتك الشاملة لمتابعة الدروس بدون تشتيت، تتبع التقدم الدراسي بالمواضيع الدقيقة، وتخطيط الامتحانات اليومية.</p>
+            </div>
+
+            <!-- Big Blue Action Button -->
+            <button onclick="enterPlatform()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2 text-sm">
+                <span>الدخول إلى المنصة</span>
+                <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Dynamic Content Wrapper -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
-
-        <!-- SECTION 1: HOME WELCOME & OPTIONS HUB -->
-        <section id="sec-home" class="space-y-8 fade-in py-8">
-            <div class="text-center max-w-2xl mx-auto space-y-3">
-                <div class="w-20 h-20 bg-brand-600 text-white rounded-3xl shadow-xl shadow-brand-500/20 flex items-center justify-center mx-auto text-3xl mb-4">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <h2 class="text-3xl sm:text-4xl font-black tracking-tight">مرحباً بك في منصة أحمد بن علي</h2>
-                <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400">منصتك الشخصية المتكاملة لمتابعة الدروس التعليمية بدون إعلانات، وحفظ وتدريب المفردات الإنجليزية بكل احترافية.</p>
-            </div>
-
-            <!-- Two Main Cards / Options -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto pt-6">
-                <!-- Option 1: YouTube Hub -->
-                <div onclick="switchSection('youtube')" class="bg-white dark:bg-surface-900 p-8 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 transition-all cursor-pointer group flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 bg-brand-50 dark:bg-brand-950/50 text-brand-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-play-circle"></i>
+    <!-- MAIN PLATFORM INTERFACE -->
+    <div id="main-platform" class="hidden flex-col min-h-screen">
+        <!-- Header Navigation -->
+        <header class="bg-white dark:bg-surface-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-md">
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-14 sm:h-16 gap-2">
+                    <!-- Brand Title -->
+                    <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse min-w-0 cursor-pointer" onclick="switchMainTab('yt')">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-brand-600 flex items-center justify-center font-bold text-lg sm:text-xl text-white shadow-lg shadow-brand-600/30 shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                            </svg>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-brand-600 transition-colors">يوتيوب بدون تشتيت</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">تابع محاضراتك وقنواتك التعليمية المفضلة، تتبع الدروس المكتملة، واستفد من اقتراحات التنقل الذكي للمحاضرات.</p>
-                    </div>
-                    <div class="mt-8 flex items-center text-brand-600 font-bold text-sm gap-2">
-                        <span>دخول المنصة</span>
-                        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                    </div>
-                </div>
-
-                <!-- Option 2: Vocab Hub -->
-                <div onclick="switchSection('vocab')" class="bg-white dark:bg-surface-900 p-8 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 transition-all cursor-pointer group flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-book-bookmark"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">المفردات الإنجليزية</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">أضف كلماتك الجديدة، نظم قائمتك المحفوظة، واختبر استيعابك عبر اختبارات تفاعلية ذكية ومتنوعة.</p>
-                    </div>
-                    <div class="mt-8 flex items-center text-indigo-600 font-bold text-sm gap-2">
-                        <span>دخول القسم</span>
-                        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: YOUTUBE DISTRACTION-FREE PLATFORM -->
-        <section id="sec-youtube" class="hidden space-y-6 fade-in">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- Sidebar Channels -->
-                <aside class="lg:col-span-1 bg-white dark:bg-surface-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col max-h-96 lg:max-h-none lg:h-[calc(100vh-8rem)] lg:sticky lg:top-20 shadow-sm">
-                    <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-800">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">القنوات والمواد</h3>
-                        <span id="channels-count" class="bg-slate-100 dark:bg-surface-800 text-brand-600 font-semibold text-xs px-2 py-0.5 rounded-full">0</span>
-                    </div>
-                    <div class="relative mb-3">
-                        <input type="text" id="channel-search" placeholder="بحث في المدرسين..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs border border-slate-300 dark:border-slate-700 rounded-xl pr-8 pl-3 py-2 focus:outline-none focus:border-brand-500">
-                        <i class="fa-solid fa-search absolute right-3 top-3 text-slate-400 text-xs"></i>
-                    </div>
-                    <div id="channels-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
-                    <button onclick="openAddChannelModal()" class="mt-3 w-full bg-brand-600 hover:bg-brand-500 text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-md">
-                        <i class="fa-solid fa-plus ml-1"></i> إضافة مدرس/قناة
-                    </button>
-                </aside>
-
-                <!-- Workspace -->
-                <div class="lg:col-span-3 space-y-6">
-                    <!-- Video Player -->
-                    <section id="player-section" class="hidden bg-white dark:bg-surface-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
-                        <div class="aspect-video-container bg-black flex items-center justify-center">
-                            <iframe id="youtube-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="p-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                            <div>
-                                <h3 id="active-video-title" class="text-sm sm:text-base font-bold line-clamp-2">لم يتم تحديد فيديو</h3>
-                                <p id="active-video-channel" class="text-xs text-brand-600 mt-1 font-medium">-</p>
-                            </div>
-                            <button id="btn-toggle-complete" onclick="toggleCompleteActiveVideo()" class="bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0">
-                                <i class="fa-solid fa-check"></i>
-                                <span id="complete-btn-text">تحديد كمكتمل</span>
-                            </button>
-                        </div>
-                    </section>
-
-                    <!-- Next Video Suggestion -->
-                    <section id="next-video-suggestion" class="hidden bg-gradient-to-r from-brand-600 to-blue-600 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between gap-4">
                         <div class="truncate">
-                            <p class="text-[10px] text-brand-100 font-semibold uppercase">الدرس التالي المقترح</p>
+                            <h1 class="text-sm sm:text-lg font-bold tracking-wide text-slate-900 dark:text-white truncate">منصة أحمد بن علي</h1>
+                            <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 hidden xs:block truncate">منهج 2027 - السادس الإعدادي</p>
+                        </div>
+                    </div>
+
+                    <!-- Platform Navigation Tabs -->
+                    <div class="flex items-center gap-1 bg-slate-100 dark:bg-surface-800 p-1 rounded-xl text-xs font-bold">
+                        <button id="nav-btn-yt" onclick="switchMainTab('yt')" class="px-3 py-1.5 rounded-lg transition-all bg-brand-600 text-white shadow">الدروس بدون تشتيت</button>
+                        <button id="nav-btn-progress" onclick="switchMainTab('progress')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">تتبع التقدم الدراسي</button>
+                        <button id="nav-btn-scheduler" onclick="switchMainTab('scheduler')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">جدول الامتحانات</button>
+                    </div>
+
+                    <!-- Global Flexible Search & Actions -->
+                    <div class="flex items-center space-x-2 space-x-reverse shrink-0">
+                        <div class="relative hidden md:block w-36 lg:w-48">
+                            <input type="text" id="global-search" placeholder="بحث عن محاضرة..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg pr-8 pl-3 py-1.5 focus:outline-none focus:border-brand-500 transition-colors">
+                            <svg class="w-4 h-4 text-slate-400 absolute right-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+
+                        <!-- Theme Toggle Button -->
+                        <button id="btn-theme-toggle" class="p-2 sm:p-2.5 rounded-lg bg-slate-200 dark:bg-surface-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-700" title="تبديل الوضع الليلي / النهار">
+                            <svg id="icon-sun" class="w-4 h-4 sm:w-5 sm:h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <svg id="icon-moon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        </button>
+
+                        <button id="btn-add-channel" class="bg-brand-600 hover:bg-brand-500 text-white px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            <span class="hidden sm:inline">إضافة مدرس/قناة</span>
+                            <span class="sm:hidden">إضافة</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- VIEW 1: YOUTUBE NO-DISTRACTION PLAYER -->
+        <div id="view-yt" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
+
+            <!-- Sidebar: Channel & Teacher Management -->
+            <aside class="lg:col-span-1 bg-white dark:bg-surface-900 rounded-xl border border-slate-200 dark:border-slate-800 p-3 sm:p-4 flex flex-col max-h-80 lg:max-h-none lg:h-[calc(100vh-7rem)] lg:sticky lg:top-20 shadow-sm">
+                <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-200 dark:border-slate-800">
+                    <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">المدرسين والمواد</h2>
+                    <span id="channels-count" class="bg-slate-100 dark:bg-surface-800 text-brand-600 dark:text-brand-500 font-semibold text-xs px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">0</span>
+                </div>
+
+                <!-- Search filter inside Channels -->
+                <div class="relative mb-2.5">
+                    <input type="text" id="channel-search" placeholder="بحث عن مدرس أو مادة..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg pr-8 pl-3 py-1.5 sm:py-2 focus:outline-none focus:border-brand-500 transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 absolute right-2.5 top-2 sm:top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+
+                <!-- Channels List Container -->
+                <div id="channels-list" class="flex-1 overflow-y-auto space-y-1.5 sm:space-y-2 pr-0.5">
+                    <!-- Channels rendered dynamically -->
+                </div>
+            </aside>
+
+            <!-- Main Workspace (Video Player & Grid) -->
+            <main class="lg:col-span-3 space-y-4 sm:space-y-6">
+
+                <!-- Video Player Display Container -->
+                <section id="player-section" class="hidden bg-white dark:bg-surface-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl sm:shadow-2xl">
+                    <div id="video-embed-container" class="aspect-video-container bg-black flex items-center justify-center">
+                        <iframe id="youtube-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div>
+                            <h2 id="active-video-title" class="text-xs sm:text-base font-bold text-slate-900 dark:text-slate-100 line-clamp-2">لم يتم تحديد فيديو</h2>
+                            <p id="active-video-channel" class="text-[11px] sm:text-xs text-brand-600 dark:text-brand-500 mt-0.5 sm:mt-1 font-medium">-</p>
+                        </div>
+                        <button id="btn-toggle-complete" class="bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span id="complete-btn-text">تحديد كمكتمل</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Suggested Next Video Banner -->
+                <section id="next-video-suggestion" class="hidden bg-gradient-to-r from-brand-600 to-brand-700 text-white p-3 sm:p-4 rounded-xl shadow-lg border border-brand-500 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+                    <div class="flex items-center space-x-2.5 sm:space-x-3 space-x-reverse overflow-hidden">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div class="truncate">
+                            <p class="text-[10px] sm:text-[11px] text-brand-100 font-semibold uppercase tracking-wider">الدرس التالي المقترح</p>
                             <h4 id="next-video-title" class="text-xs sm:text-sm font-bold truncate">الدرس التالي...</h4>
                         </div>
-                        <button onclick="playNextVideo()" class="bg-white text-brand-700 hover:bg-brand-50 font-bold px-4 py-2 rounded-xl text-xs shrink-0 shadow">
-                            تشغيل المحاضرة التالية ➔
-                        </button>
-                    </section>
+                    </div>
+                    <button id="btn-play-next" class="bg-white text-brand-700 hover:bg-brand-50 font-bold px-3 sm:px-4 py-2 rounded-lg text-xs transition-colors shrink-0 shadow text-center">
+                        تشغيل المحاضرة التالية ➔
+                    </button>
+                </section>
 
-                    <!-- Feed / Controls -->
-                    <div class="bg-white dark:bg-surface-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <!-- Video Cards Section / YouTube Style Feed -->
+                <section class="space-y-3 sm:space-y-4">
+                    <!-- Search & Filters Header -->
+                    <div class="flex flex-col gap-3 sm:gap-4 bg-white dark:bg-surface-900 p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
                             <div>
-                                <h3 id="current-view-title" class="text-sm font-bold">اقتراحات القنوات والدروس</h3>
-                                <p id="current-view-subtitle" class="text-xs text-slate-500">أحدث المحاضرات من القنوات المضافة</p>
-                            </div>
-                            <div class="relative w-full sm:w-64">
-                                <input type="text" id="global-search" placeholder="بحث ذكي عن أي محاضرة..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs border border-slate-300 dark:border-slate-700 rounded-xl pr-8 pl-3 py-2 focus:outline-none focus:border-brand-500">
-                                <i class="fa-solid fa-search absolute right-3 top-3 text-slate-400 text-xs"></i>
+                                <h3 id="current-view-title" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">اقتراحات القنوات والدروس</h3>
+                                <p id="current-view-subtitle" class="text-[11px] sm:text-xs text-slate-500">أحدث المحاضرات والملخصات من القنوات المضافة</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-semibold border-t border-slate-100 dark:border-slate-800 pt-2">
-                            <button onclick="switchYTTab('feed')" id="yt-tab-feed" class="yt-tab active px-3 py-1.5 rounded-xl bg-brand-600 text-white whitespace-nowrap">الرئيسية</button>
-                            <button onclick="switchYTTab('videos')" id="yt-tab-videos" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">الفيديوهات</button>
-                            <button onclick="switchYTTab('playlists')" id="yt-tab-playlists" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">قوائم التشغيل</button>
-                            <button onclick="switchYTTab('shorts')" id="yt-tab-shorts" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">الشورتس</button>
-                            <button onclick="switchYTTab('completed')" id="yt-tab-completed" class="yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">المكتملة ✓</button>
+
+                        <!-- Content Sub-tabs -->
+                        <div id="content-tabs" class="flex items-center space-x-1.5 sm:space-x-2 space-x-reverse pt-2 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold overflow-x-auto pb-1">
+                            <button data-tab="feed" class="tab-btn active px-3 py-1.5 rounded-lg bg-brand-600 text-white transition-all whitespace-nowrap">الرئيسية (اقتراحات)</button>
+                            <button data-tab="videos" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الفيديوهات</button>
+                            <button data-tab="playlists" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">قوائم التشغيل</button>
+                            <button data-tab="shorts" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الشورتس</button>
+                            <button data-tab="completed" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">المكتبة (المكتملة)</button>
                         </div>
                     </div>
 
-                    <!-- Grid -->
-                    <div id="videos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-                    <div id="loading-spinner" class="hidden py-8 text-center">
-                        <div class="inline-block w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                    <!-- Content Display Grid -->
+                    <div id="videos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                        <!-- Cards will be populated here -->
                     </div>
+
+                    <!-- Loading Spinner -->
+                    <div id="loading-spinner" class="hidden py-6 sm:py-8 text-center">
+                        <div class="inline-block w-7 h-7 sm:w-8 sm:h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">جاري جلب المحتوى من اليوتيوب...</p>
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div id="load-more-container" class="text-center py-3 sm:py-4 hidden">
+                        <button id="btn-load-more" class="w-full sm:w-auto bg-white dark:bg-surface-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-brand-600 dark:text-brand-500 font-bold px-6 py-2.5 rounded-lg text-xs transition-colors border border-slate-200 dark:border-slate-700 shadow-sm">
+                            تحميل المزيد من المحتوى
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- VIEW 2: SUBJECT TOPICS PROGRESS TRACKER -->
+        <div id="view-progress" class="hidden max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full space-y-6 fade-in">
+            <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">تتبع التقدم الدراسي بالمواضيع الدقيقة</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">تابع إنجاز كل موضوع بدقة في المواد الوزارية واشطب ما كملته لتعرف نسبة إنجازك الحقيقية.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="overall-progress-text" class="text-xs font-bold text-brand-600 dark:text-brand-400">0% إجمالي الإنجاز</span>
                 </div>
             </div>
-        </section>
 
-        <!-- SECTION 3: ENGLISH VOCABULARY PLATFORM -->
-        <section id="sec-vocab" class="hidden space-y-6 fade-in">
-            <!-- Vocab Header & Tabs -->
-            <div class="bg-white dark:bg-surface-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
-                <div>
-                    <h3 class="text-base font-bold">إدارة وحفظ المفردات</h3>
-                    <p class="text-xs text-slate-500">طور حصيلتك اللغوية واختبر نفسك</p>
+            <!-- Subjects Selection Tabs -->
+            <div id="subject-tabs-container" class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800 text-xs font-bold">
+                <!-- Tabs rendered dynamically via JS -->
+            </div>
+
+            <!-- Subject Progress Content -->
+            <div id="subject-content-container" class="space-y-4">
+                <!-- Topics list rendered dynamically -->
+            </div>
+        </div>
+
+        <!-- VIEW 3: SMART EXAM SCHEDULER -->
+        <div id="view-scheduler" class="hidden max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full space-y-6 fade-in">
+            <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
+                <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">مخطط وجدول الامتحانات الذكي</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">حدد تاريخ امتحانك والمواضيع المتبقية ليقوم النظام بحساب الخطة وحساب المواضيع المطلوبة منك صباحاً ومساءً.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div>
+                        <label class="block text-xs font-bold mb-1">المادة</label>
+                        <select id="schedule-subject" class="w-full bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs font-semibold">
+                            <option value="grammar">قواعد اللغة العربية</option>
+                            <option value="literature">الأدب والنصوص</option>
+                            <option value="english">اللغة الإنجليزية (8 Units)</option>
+                            <option value="math">الرياضيات</option>
+                            <option value="physics">الفيزياء</option>
+                            <option value="chemistry">الكيمياء</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1">تاريخ الامتحان</label>
+                        <input type="date" id="schedule-date" class="w-full bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs font-semibold">
+                    </div>
                 </div>
-                <div class="flex bg-slate-100 dark:bg-surface-800 p-1 rounded-xl gap-1 text-xs font-semibold">
-                    <button onclick="switchVocabTab('manage')" id="vocab-tab-manage" class="px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm transition-all">
-                        <i class="fa-solid fa-book-open ml-1"></i> الكلمات (<span id="word-count-badge">0</span>)
+
+                <button onclick="calculateExamSchedule()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2.5 rounded-xl text-xs shadow transition-all">حساب وإنشاء جدول الدراسة الذكي</button>
+            </div>
+
+            <!-- Generated Schedule Result -->
+            <div id="schedule-result" class="hidden bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">جدول التوزيع اليومي المقترح</h3>
+                <div id="schedule-details" class="space-y-3 text-xs"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Channel / Teacher -->
+    <div id="modal-add-channel" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+        <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div class="p-3.5 sm:p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">إضافة قناة أو مدرس جديد</h3>
+                <button class="btn-close-modal text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="form-add-channel" class="p-3.5 sm:p-4 space-y-3.5 sm:space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">اسم المدرس أو المادة</label>
+                    <input type="text" id="input-teacher-name" required placeholder="مثال: الأستاذ أحمد - الرياضيات" class="w-full bg-slate-50 dark:bg-surface-950 text-xs sm:text-sm text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">رابط القناة أو المعرف (Handle)</label>
+                    <input type="text" id="input-channel-url" required placeholder="مثال: @channelname أو https://youtube.com/@channel" class="w-full bg-slate-50 dark:bg-surface-950 text-xs sm:text-sm text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                    <p class="text-[10px] sm:text-[11px] text-slate-500 mt-1">يقبل الموقع المعرفات مثل @name، أو روابط القنوات الكاملة، أو Channel ID.</p>
+                </div>
+                <div id="add-channel-error" class="hidden p-2.5 sm:p-3 bg-red-100 dark:bg-red-950/50 border border-red-200 dark:border-red-800/80 rounded-lg text-xs text-red-600 dark:text-red-300"></div>
+                <div class="flex items-center justify-end space-x-2 space-x-reverse pt-2">
+                    <button type="button" class="btn-close-modal px-3.5 sm:px-4 py-2 bg-slate-200 dark:bg-surface-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg transition-colors">إلغاء</button>
+                    <button type="submit" id="btn-submit-channel" class="px-3.5 sm:px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-2">
+                        <span>إضافة القناة</span>
                     </button>
-                    <button onclick="switchVocabTab('quiz')" id="vocab-tab-quiz" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 transition-all">
-                        <i class="fa-solid fa-gamepad ml-1"></i> الاختبار
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tab 1: Manage -->
-            <div id="vocab-section-manage" class="space-y-6">
-                <div class="bg-white dark:bg-surface-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <h4 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-plus-circle text-brand-600"></i> إضافة كلمة جديدة</h4>
-                    <form onsubmit="addVocabWord(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">الكلمة بالإنجليزية</label>
-                            <input type="text" id="eng-input" required placeholder="e.g. Amazing..." dir="ltr" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-left">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">الترجمة بالعربية</label>
-                            <input type="text" id="ara-input" required placeholder="مثال: مذهل..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500">
-                        </div>
-                        <div class="sm:col-span-2 flex justify-end">
-                            <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-2.5 rounded-xl text-xs transition-all shadow-md">
-                                <i class="fa-solid fa-bookmark ml-1"></i> حفظ الكلمة
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="bg-white dark:bg-surface-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h4 class="font-bold">قائمة الكلمات المحفوظة (<span id="total-count">0</span>)</h4>
-                        <button onclick="clearAllVocabWords()" class="bg-rose-50 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-semibold border border-rose-100 hover:bg-rose-100">مسح الكل</button>
-                    </div>
-                    <div class="relative">
-                        <input type="text" id="vocab-search-input" oninput="renderVocabWords()" placeholder="ابحث في كلماتك..." class="w-full pr-9 pl-4 py-2 bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-xl text-xs">
-                        <i class="fa-solid fa-search absolute right-3 top-3 text-slate-400 text-xs"></i>
-                    </div>
-                    <div id="words-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-80 overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-
-            <!-- Tab 2: Quiz -->
-            <div id="vocab-section-quiz" class="hidden bg-white dark:bg-surface-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm min-h-[350px] flex flex-col justify-between">
-                <div id="quiz-body">
-                    <div id="quiz-start-screen" class="text-center py-12">
-                        <div class="w-16 h-16 bg-brand-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">
-                            <i class="fa-solid fa-brain"></i>
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">اختبر حفظك للمفردات</h4>
-                        <p class="text-xs text-slate-500 mb-6">اختر الإجابة الصحيحة للترجمة من بين الخيارات المتعددة.</p>
-                        <button onclick="startVocabQuiz()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-md">بدء الاختبار</button>
-                    </div>
-                    <div id="quiz-question-screen" class="hidden space-y-6">
-                        <div class="text-center bg-brand-50 dark:bg-surface-800 p-6 rounded-2xl border border-brand-100 dark:border-slate-700">
-                            <span class="text-xs text-brand-600 font-semibold">ترجم الكلمة التالية:</span>
-                            <h3 id="question-word" class="text-2xl font-black mt-2" dir="ltr">Word</h3>
-                        </div>
-                        <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-                    </div>
-                    <div id="quiz-results-screen" class="hidden text-center py-8 space-y-4">
-                        <h3 class="text-xl font-bold" id="result-title">أحسنت!</h3>
-                        <p class="text-xs text-slate-500" id="final-score-text">النتيجة: 0 / 0</p>
-                        <button onclick="startVocabQuiz()" class="bg-brand-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl">إعادة الاختبار</button>
-                    </div>
-                </div>
-                <div id="quiz-footer" class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end hidden">
-                    <button id="next-question-btn" onclick="nextVocabQuestion()" class="bg-brand-600 text-white text-xs px-4 py-2 rounded-xl">السؤال التالي ←</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal: Add Channel -->
-    <div id="modal-add-channel" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md shadow-2xl p-6 space-y-4">
-            <div class="flex items-center justify-between">
-                <h3 class="font-bold text-sm">إضافة قناة أو مدرس جديد</h3>
-                <button onclick="closeAddChannelModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <form onsubmit="handleAddChannel(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">اسم المدرس أو المادة</label>
-                    <input type="text" id="input-teacher-name" required placeholder="مثال: أستاذ الرياضيات" class="w-full bg-slate-50 dark:bg-surface-950 text-xs border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2.5">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">رابط أو معرف القناة</label>
-                    <input type="text" id="input-channel-url" required placeholder="@channelname" class="w-full bg-slate-50 dark:bg-surface-950 text-xs border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2.5">
-                </div>
-                <div id="add-channel-error" class="hidden text-xs text-rose-500"></div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeAddChannelModal()" class="px-4 py-2 bg-slate-100 dark:bg-surface-800 text-xs rounded-xl">إلغاء</button>
-                    <button type="submit" id="btn-submit-channel" class="px-4 py-2 bg-brand-600 text-white text-xs font-bold rounded-xl">إضافة القناة</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-3 text-xs">
-        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
-        <span id="toast-message">رسالة تنبيه</span>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-white/50 dark:bg-surface-900/50 border-t border-slate-200 dark:border-slate-800 py-4 text-center text-xs text-slate-500 mt-12">
-        <p>منصة أحمد بن علي التعليمية &copy; 2026 - جميع الحقوق محفوظة</p>
-    </footer>
-
-    <!-- Integrated Script -->
+    <!-- Main Logic Script -->
     <script>
-        // --- PWA INSTALL PROMPT LOGIC ---
-        let deferredPrompt;
-        const installBtn = document.getElementById('btn-install-app');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.classList.remove('hidden');
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                showToast('تم بدء تثبيت التطبيق بنجاح!');
+        // Data Structure for Topics & Detailed Curriculum
+        const curriculumData = {
+            grammar: {
+                title: "قواعد اللغة العربية",
+                topics: [
+                    { id: "g1", title: "الاستفهام: أدواته، معانيه، أنواعه، وإعراب أسماء الاستفهام" },
+                    { id: "g2", title: "النفي: الظاهر والضمنية، ليس، ما، لا، إن، لات، ولن" },
+                    { id: "g3", title: "التوكيد: اللفظي، المعنوي، التوكيد بالحروف والنعت" },
+                    { id: "g4", title: "التقديم والتأخير: تقديم الخبر والمفعول به وجوباً وجوازاً" },
+                    { id: "g5", title: "النداء: أدوات النداء وأحكام المنادى والترخيم" },
+                    { id: "g6", title: "التعجب: صيغ التعجب القياسي والسماعي" },
+                    { id: "g7", title: "المدح والذم: نعم وبئس وحبذا ولا حبذا" },
+                    { id: "g8", title: "التمني والترجي: أدوات التمني والترجي وأحكامها" }
+                ]
+            },
+            literature: {
+                title: "الأدب والنصوص",
+                topics: [
+                    { id: "l1", title: "مدرسة المحافظين: البارودي، الحبوبي، الرصافي، والجواهري" },
+                    { id: "l2", title: "مدرسة المهجر: إيليا أبو ماضي وقصيدة الحجر الصغير" },
+                    { id: "l3", title: "جماعة أبولو: علي محمود طه ومحمود حسن إسماعيل" },
+                    { id: "l4", title: "شعر القضية الفلسطينية: فدوى طوقان ومحمود درويش" },
+                    { id: "l5", title: "الشعر الحر: السياب، نازك الملائكة، وبلند الحيدري" },
+                    { id: "l6", title: "القصة القصيرة: القصة القصيرة في العراق ومحمود أحمد السيد" },
+                    { id: "l7", title: "المقالة الأدبية: نشأتها وأنواعها والدكتور علي جواد الطاهر" },
+                    { id: "l8", title: "الرواية والمسرحية: العناصر والنشأة وتجربة محمد علي الخفاجي" }
+                ]
+            },
+            english: {
+                title: "اللغة الإنجليزية (English Curriculum 8 Units)",
+                topics: [
+                    { id: "e1", title: "Unit 1: Past Simple/Continuous, Adjectives (-ed/-ing), Used to & Mustafa's Story" },
+                    { id: "e2", title: "Unit 2: Obligation, Advice, Requests, Radar Security & Causative Verbs" },
+                    { id: "e3", title: "Unit 3: Conditionals, Jobs, Reported Speech, Regrets & Samira Al-Mahmoud" },
+                    { id: "e4", title: "Unit 4: Revision Unit 1-3 & Integrated Skills Practice" },
+                    { id: "e5", title: "Unit 5: Present Perfect Simple/Continuous, Relative Clauses & Holiday Reading" },
+                    { id: "e6", title: "Unit 6: Passive Voice in all tenses, Banking Terms & Bank Manager Job" },
+                    { id: "e7", title: "Unit 7: Future Forms, Future in Past, Library Work & Distance Learning" },
+                    { id: "e8", title: "Unit 8: Advanced Revision, Exam Practice & Literature Focus (The Swing & The Canary)" }
+                ]
+            },
+            math: {
+                title: "الرياضيات",
+                topics: [
+                    { id: "m1", title: "الفصل الأول: الأعداد المركبة وديموافر والأوميغا" },
+                    { id: "m2", title: "الفصل الثاني: القطوع المخروطية (المكافئ، الناقص، الزائد)" },
+                    { id: "m3", title: "الفصل الثالث: تطبيقات التفاضل والمعدلات الزمنية ورسم الدوال" },
+                    { id: "m4", title: "الفصل الرابع: التكامل المحدد وغير المحدد والمساحات والمسافة" },
+                    { id: "m5", title: "الفصل الخامس: المعادلات التفاضلية الاعتيادية وتطبيقاتها" }
+                ]
+            },
+            physics: {
+                title: "الفيزياء",
+                topics: [
+                    { id: "p1", title: "الفصل الأول: المتسعات وربط التوالي والتوازي والعازل" },
+                    { id: "p2", title: "الفصل الثاني: الحث الكهرومغناطيسي وفاراداي ولينز" },
+                    { id: "p3", title: "الفصل الثالث: التيار المتناوب ودوائر الرنين RLC" },
+                    { id: "p4", title: "الفصل الرابع والخامس: الموجات الكهرومغناطيسية والبصريات الفيزيائية" },
+                    { id: "p5", title: "الفصل السادس والسابع: الفيزياء الحديثة وأطياف الذرة والليزر" },
+                    { id: "p6", title: "الفصل الثامن والتاسع: الإلكترونيات والفيزياء النووية" }
+                ]
+            },
+            chemistry: {
+                title: "الكيمياء",
+                topics: [
+                    { id: "c1", title: "الفصل الأول: الثرموديناميك وقانون هس وطاقة جيبس" },
+                    { id: "c2", title: "الفصل الثاني: الاتزان الكيميائي وثابت الاتزان وقاعدة لوشاتليه" },
+                    { id: "c3", title: "الفصل الثالث: الاتزان الأيوني، الأس الهيدروجيني والمحلول المنظم (البفر)" },
+                    { id: "c4", title: "الفصل الرابع: الكيمياء الكهربائية ومعادلة نيرنست وقوانين فراداي" },
+                    { id: "c5", title: "الفصل الخامس والسادس: الكيمياء التناسقية والتحليلية" },
+                    { id: "c6", title: "الفصل السابع والثامن: الكيمياء العضوية والكيمياء الحيوية" }
+                ]
             }
-            deferredPrompt = null;
-            installBtn.classList.add('hidden');
-        });
+        };
 
-        window.addEventListener('appinstalled', () => {
-            installBtn.classList.add('hidden');
-            showToast('تم تثبيت التطبيق على جهازك!');
-        });
-
-        // --- GLOBAL & APP STATE ---
-        const apiKey = "AIzaSyAi-Xxn39YN3tKb0_5Z2P3qCiRAaBFF6Y8";
-        let ytState = {
+        // Application State Management
+        let state = {
+            apiKey: "AIzaSyAi-Xxn39YN3tKb0_5Z2P3qCiRAaBFF6Y8",
             channels: JSON.parse(localStorage.getItem('yt_study_channels') || '[]'),
             completedVideos: JSON.parse(localStorage.getItem('yt_study_completed') || '[]'),
+            completedTopics: JSON.parse(localStorage.getItem('completed_study_topics') || '[]'),
             selectedChannelId: null,
             activeTab: 'feed',
+            activeSubjectKey: 'grammar',
             videos: [],
             playlists: [],
             shorts: [],
             activeVideoId: localStorage.getItem('yt_study_last_video_id') || null,
             nextSuggestedVideo: null,
-            globalSearchQuery: '',
             channelSearchQuery: '',
-            channelPageTokens: {},
-            hasMore: false
+            globalSearchQuery: '',
+            channelPageTokens: {}, 
+            hasMore: false,
+            isLoadingMore: false
         };
 
-        let vocabState = {
-            words: JSON.parse(localStorage.getItem('vocab_words')) || [
-                { id: '1', eng: 'Broken', ara: 'مكسور' },
-                { id: '2', eng: 'Amazing', ara: 'مذهل' },
-                { id: '3', eng: 'Challenge', ara: 'تحدي' },
-                { id: '4', eng: 'Success', ara: 'نجاح' },
-                { id: '5', eng: 'Knowledge', ara: 'معرفة' }
-            ],
-            questions: [],
-            index: 0,
-            score: 0,
-            submitted: false
+        // DOM Elements
+        const elements = {
+            channelsList: document.getElementById('channels-list'),
+            channelsCount: document.getElementById('channels-count'),
+            videosGrid: document.getElementById('videos-grid'),
+            loadingSpinner: document.getElementById('loading-spinner'),
+            loadMoreContainer: document.getElementById('load-more-container'),
+            btnLoadMore: document.getElementById('btn-load-more'),
+            playerSection: document.getElementById('player-section'),
+            iframe: document.getElementById('youtube-iframe'),
+            activeVideoTitle: document.getElementById('active-video-title'),
+            activeVideoChannel: document.getElementById('active-video-channel'),
+            currentViewTitle: document.getElementById('current-view-title'),
+            currentViewSubtitle: document.getElementById('current-view-subtitle'),
+            modalAddChannel: document.getElementById('modal-add-channel'),
+            formAddChannel: document.getElementById('form-add-channel'),
+            inputTeacherName: document.getElementById('input-teacher-name'),
+            inputChannelUrl: document.getElementById('input-channel-url'),
+            addChannelError: document.getElementById('add-channel-error'),
+            btnSubmitChannel: document.getElementById('btn-submit-channel'),
+            channelSearch: document.getElementById('channel-search'),
+            globalSearch: document.getElementById('global-search'),
+            btnThemeToggle: document.getElementById('btn-theme-toggle'),
+            iconSun: document.getElementById('icon-sun'),
+            iconMoon: document.getElementById('icon-moon'),
+            nextVideoBanner: document.getElementById('next-video-suggestion'),
+            nextVideoTitle: document.getElementById('next-video-title'),
+            btnPlayNext: document.getElementById('btn-play-next'),
+            btnToggleComplete: document.getElementById('btn-toggle-complete'),
+            completeBtnText: document.getElementById('complete-btn-text')
         };
 
-        window.addEventListener('DOMContentLoaded', () => {
+        // Navigation Switcher
+        function enterPlatform() {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-platform').classList.remove('hidden');
+            document.getElementById('main-platform').classList.add('flex');
             initTheme();
             renderChannelsList();
-            renderVocabWords();
-            updateVocabCounts();
-            fetchAllYTContent();
+            fetchAllContent();
+            renderSubjectProgress();
+        }
 
-            // Event Listeners for YT Search
-            document.getElementById('global-search').addEventListener('input', (e) => {
-                ytState.globalSearchQuery = e.target.value.toLowerCase().trim();
-                renderYTVideosGrid();
+        function switchMainTab(tabKey) {
+            ['yt', 'progress', 'scheduler'].forEach(key => {
+                document.getElementById(`view-${key}`).classList.add('hidden');
+                document.getElementById(`nav-btn-${key}`).className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500";
             });
 
-            document.getElementById('channel-search').addEventListener('input', (e) => {
-                ytState.channelSearchQuery = e.target.value.toLowerCase();
+            document.getElementById(`view-${tabKey}`).classList.remove('hidden');
+            document.getElementById(`nav-btn-${tabKey}`).className = "px-3 py-1.5 rounded-lg transition-all bg-brand-600 text-white shadow";
+        }
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+
+            // Setup Event Listeners
+            document.getElementById('btn-add-channel').addEventListener('click', () => openModal(elements.modalAddChannel));
+            elements.btnLoadMore.addEventListener('click', () => fetchMoreContent());
+            elements.btnThemeToggle.addEventListener('click', toggleTheme);
+            elements.btnToggleComplete.addEventListener('click', toggleCompleteActiveVideo);
+
+            document.querySelectorAll('.btn-close-modal').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    closeModal(elements.modalAddChannel);
+                });
+            });
+
+            elements.formAddChannel.addEventListener('submit', handleAddChannel);
+
+            elements.channelSearch.addEventListener('input', (e) => {
+                state.channelSearchQuery = e.target.value.toLowerCase();
                 renderChannelsList();
+            });
+
+            elements.globalSearch.addEventListener('input', (e) => {
+                state.globalSearchQuery = e.target.value.toLowerCase().trim();
+                renderCurrentGrid();
+            });
+
+            document.querySelectorAll('#content-tabs .tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('#content-tabs .tab-btn').forEach(b => {
+                        b.classList.remove('bg-brand-600', 'text-white');
+                        b.classList.add('bg-slate-100', 'dark:bg-surface-800', 'text-slate-600', 'dark:text-slate-300');
+                    });
+                    btn.classList.remove('bg-slate-100', 'dark:bg-surface-800', 'text-slate-600', 'dark:text-slate-300');
+                    btn.classList.add('bg-brand-600', 'text-white');
+
+                    state.activeTab = btn.getAttribute('data-tab');
+                    renderCurrentGrid();
+                });
+            });
+
+            elements.btnPlayNext.addEventListener('click', () => {
+                if (state.nextSuggestedVideo) {
+                    playVideo(state.nextSuggestedVideo.id, state.nextSuggestedVideo.title, state.nextSuggestedVideo.teacherName);
+                }
             });
         });
 
-        // --- SECTION NAVIGATION & HEADER NAV HIGHLIGHTING ---
-        function switchSection(sectionName) {
-            ['home', 'youtube', 'vocab'].forEach(sec => {
-                document.getElementById(`sec-${sec}`).classList.add('hidden');
-            });
-            document.getElementById(`sec-${sectionName}`).classList.remove('hidden');
-
-            // Update header nav active states
-            ['home', 'youtube', 'vocab'].forEach(sec => {
-                const btn = document.getElementById(`nav-btn-${sec}`);
-                if (btn) {
-                    if (sec === sectionName) {
-                        btn.className = "px-3 py-1.5 rounded-lg transition-all bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold";
-                    } else {
-                        btn.className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-600 text-xs font-semibold";
-                    }
-                }
-            });
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // --- THEME ---
+        // Theme Toggle Logic
         function initTheme() {
-            const isDark = localStorage.getItem('yt_study_theme') !== 'light';
-            if (isDark) {
+            const savedTheme = localStorage.getItem('yt_study_theme') || 'dark';
+            if (savedTheme === 'dark') {
                 document.documentElement.classList.add('dark');
-                document.getElementById('icon-sun').classList.remove('hidden');
-                document.getElementById('icon-moon').classList.add('hidden');
+                elements.iconSun.classList.remove('hidden');
+                elements.iconMoon.classList.add('hidden');
             } else {
                 document.documentElement.classList.remove('dark');
-                document.getElementById('icon-sun').classList.add('hidden');
-                document.getElementById('icon-moon').classList.remove('hidden');
+                elements.iconSun.classList.add('hidden');
+                elements.iconMoon.classList.add('hidden');
             }
         }
 
-        document.getElementById('btn-theme-toggle').addEventListener('click', () => {
+        function toggleTheme() {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('yt_study_theme', isDark ? 'dark' : 'light');
-            document.getElementById('icon-sun').classList.toggle('hidden', !isDark);
-            document.getElementById('icon-moon').classList.toggle('hidden', isDark);
-        });
-
-        // --- TOAST ---
-        function showToast(msg, type = 'success') {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = msg;
-            document.getElementById('toast-icon').className = type === 'success' ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-solid fa-circle-exclamation text-rose-400';
-            toast.classList.remove('opacity-0', 'pointer-events-none');
-            toast.classList.add('opacity-100');
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 3000);
+            elements.iconSun.classList.toggle('hidden', !isDark);
+            elements.iconMoon.classList.toggle('hidden', isDark);
         }
 
-        // --- YOUTUBE PLATFORM LOGIC ---
-        function openAddChannelModal() { document.getElementById('modal-add-channel').classList.remove('hidden'); }
-        function closeAddChannelModal() { document.getElementById('modal-add-channel').classList.add('hidden'); }
+        // Modal Controls
+        function openModal(modal) { modal.classList.remove('hidden'); }
+        function closeModal(modal) {
+            modal.classList.add('hidden');
+            elements.addChannelError.classList.add('hidden');
+            elements.formAddChannel.reset();
+        }
 
+        // Parse Channel Input
         function parseChannelInput(input) {
             input = input.trim();
             if (input.startsWith('UC') && input.length === 24) return { type: 'id', value: input };
-            if (input.includes('/channel/')) return { type: 'id', value: input.split('/channel/')[1].split('/')[0].split('?')[0] };
-            if (input.includes('/@')) return { type: 'handle', value: '@' + input.split('/@')[1].split('/')[0].split('?')[0] };
+            if (input.includes('youtube.com/') || input.includes('youtu.be/')) {
+                if (input.includes('/channel/')) {
+                    const id = input.split('/channel/')[1].split('/')[0].split('?')[0];
+                    return { type: 'id', value: id };
+                }
+                if (input.includes('/@')) {
+                    const handle = input.split('/@')[1].split('/')[0].split('?')[0];
+                    return { type: 'handle', value: '@' + handle };
+                }
+            }
             if (input.startsWith('@')) return { type: 'handle', value: input };
             return { type: 'handle', value: '@' + input };
         }
 
+        // Fetch Channel Details
         async function fetchChannelDetails(parsed) {
-            const url = parsed.type === 'id' 
-                ? `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails&id=${parsed.value}&key=${apiKey}`
-                : `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails&forHandle=${parsed.value.replace('@', '')}&key=${apiKey}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            if (!res.ok || !data.items || data.items.length === 0) throw new Error('لم يتم العثور على القناة');
+            const key = state.apiKey;
+            let url = parsed.type === 'id'
+                ? `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,id&id=${parsed.value}&key=${key}`
+                : `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,id&forHandle=${parsed.value.replace('@', '')}&key=${key}`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error?.message || 'تعذر الاتصال بـ YouTube API');
+            if (!data.items || data.items.length === 0) throw new Error('لم يتم العثور على القناة. يرجى التأكد من المعرف أو الرابط.');
+
             const item = data.items[0];
+            const channelId = item.id;
+            const uploadsPlaylistId = item.contentDetails?.relatedPlaylists?.uploads || ('UU' + channelId.substring(2));
+
             return {
-                id: item.id,
+                id: channelId,
                 title: item.snippet.title,
                 thumbnail: item.snippet.thumbnails?.default?.url || '',
-                uploadsPlaylistId: item.contentDetails?.relatedPlaylists?.uploads || ('UU' + item.id.substring(2))
+                uploadsPlaylistId: uploadsPlaylistId
             };
         }
 
+        // Add Channel
         async function handleAddChannel(e) {
             e.preventDefault();
-            const teacherName = document.getElementById('input-teacher-name').value.trim();
-            const channelInput = document.getElementById('input-channel-url').value.trim();
-            const errBox = document.getElementById('add-channel-error');
-            errBox.classList.add('hidden');
+            elements.addChannelError.classList.add('hidden');
+            elements.btnSubmitChannel.disabled = true;
+            elements.btnSubmitChannel.innerText = 'جاري التحقق...';
+
+            const teacherName = elements.inputTeacherName.value.trim();
+            const channelRawInput = elements.inputChannelUrl.value.trim();
 
             try {
-                const parsed = parseChannelInput(channelInput);
-                const chData = await fetchChannelDetails(parsed);
-                if (ytState.channels.some(c => c.id === chData.id)) throw new Error('هذه القناة مضافة مسبقاً');
+                const parsed = parseChannelInput(channelRawInput);
+                const channelData = await fetchChannelDetails(parsed);
 
-                ytState.channels.push({
-                    id: chData.id,
+                if (state.channels.some(c => c.id === channelData.id)) {
+                    throw new Error('هذه القناة مضافة بالفعل في القائمة.');
+                }
+
+                const newChannel = {
+                    id: channelData.id,
                     teacherName: teacherName,
-                    channelTitle: chData.title,
-                    thumbnail: chData.thumbnail,
-                    uploadsPlaylistId: chData.uploadsPlaylistId
-                });
-                localStorage.setItem('yt_study_channels', JSON.stringify(ytState.channels));
+                    channelTitle: channelData.title,
+                    thumbnail: channelData.thumbnail,
+                    uploadsPlaylistId: channelData.uploadsPlaylistId
+                };
+
+                state.channels.push(newChannel);
+                localStorage.setItem('yt_study_channels', JSON.stringify(state.channels));
+
                 renderChannelsList();
-                closeAddChannelModal();
-                showToast('تمت إضافة القناة بنجاح!');
-                fetchAllYTContent();
+                closeModal(elements.modalAddChannel);
+                selectChannel(newChannel.id);
             } catch (err) {
-                errBox.textContent = err.message;
-                errBox.classList.remove('hidden');
+                elements.addChannelError.innerText = err.message || 'حدث خطأ أثناء إضافة القناة';
+                elements.addChannelError.classList.remove('hidden');
+            } finally {
+                elements.btnSubmitChannel.disabled = false;
+                elements.btnSubmitChannel.innerText = 'إضافة القناة';
             }
         }
 
-        function deleteYTChannel(id, event) {
+        // Delete Channel
+        function deleteChannel(channelId, event) {
             event.stopPropagation();
-            if (confirm('هل أنت متأكد من حذف هذه القناة؟')) {
-                ytState.channels = ytState.channels.filter(c => c.id !== id);
-                localStorage.setItem('yt_study_channels', JSON.stringify(ytState.channels));
-                if (ytState.selectedChannelId === id) ytState.selectedChannelId = null;
+            if (confirm('هل أنت تأكد من إزالة هذا المدرس والقناة من القائمة؟')) {
+                state.channels = state.channels.filter(c => c.id !== channelId);
+                localStorage.setItem('yt_study_channels', JSON.stringify(state.channels));
+                if (state.selectedChannelId === channelId) state.selectedChannelId = null;
                 renderChannelsList();
-                fetchAllYTContent();
-                showToast('تم حذف القناة');
+                fetchAllContent();
             }
         }
 
+        // Render Channels
         function renderChannelsList() {
-            document.getElementById('channels-count').textContent = ytState.channels.length;
-            const list = document.getElementById('channels-list');
-            list.innerHTML = '';
+            elements.channelsCount.innerText = state.channels.length;
+            elements.channelsList.innerHTML = '';
 
-            const allActive = ytState.selectedChannelId === null;
+            const allActive = state.selectedChannelId === null;
             const allBtn = document.createElement('div');
-            allBtn.className = `p-2.5 rounded-xl cursor-pointer transition-all flex items-center justify-between text-xs ${allActive ? 'bg-brand-600 text-white font-bold shadow' : 'bg-slate-50 dark:bg-surface-850 hover:bg-slate-200 dark:hover:bg-slate-800'}`;
-            allBtn.innerHTML = `<div class="flex items-center gap-2"><i class="fa-solid fa-layer-group"></i><span>جميع المواد</span></div>`;
-            allBtn.onclick = () => { ytState.selectedChannelId = null; renderChannelsList(); fetchAllYTContent(); };
-            list.appendChild(allBtn);
+            allBtn.className = `p-2.5 sm:p-3 rounded-lg cursor-pointer transition-all flex items-center justify-between ${
+                allActive ? 'bg-brand-600 text-white font-bold shadow-md' : 'bg-slate-50 dark:bg-surface-850 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+            }`;
+            allBtn.innerHTML = `
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <span class="text-xs">الرئيسية (جميع المواد)</span>
+                </div>
+            `;
+            allBtn.onclick = () => {
+                state.selectedChannelId = null;
+                renderChannelsList();
+                fetchAllContent();
+            };
+            elements.channelsList.appendChild(allBtn);
 
-            const query = ytState.channelSearchQuery;
-            ytState.channels.filter(c => c.teacherName.toLowerCase().includes(query) || c.channelTitle.toLowerCase().includes(query)).forEach(ch => {
-                const isActive = ytState.selectedChannelId === ch.id;
+            const filtered = state.channels.filter(c => 
+                c.teacherName.toLowerCase().includes(state.channelSearchQuery) || 
+                c.channelTitle.toLowerCase().includes(state.channelSearchQuery)
+            );
+
+            filtered.forEach(channel => {
+                const isActive = state.selectedChannelId === channel.id;
                 const card = document.createElement('div');
-                card.className = `p-2.5 rounded-xl cursor-pointer transition-all flex items-center justify-between text-xs group ${isActive ? 'bg-brand-600 text-white shadow' : 'bg-slate-50 dark:bg-surface-850 hover:bg-slate-200 dark:hover:bg-slate-800'}`;
+                card.className = `p-2.5 sm:p-3 rounded-lg cursor-pointer transition-all flex items-center justify-between group ${
+                    isActive ? 'bg-brand-600 text-white shadow-md' : 'bg-slate-50 dark:bg-surface-850 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                }`;
+                
                 card.innerHTML = `
-                    <div class="flex items-center gap-2 truncate">
-                        <img src="${ch.thumbnail}" class="w-6 h-6 rounded-full object-cover shrink-0">
-                        <div class="truncate"><h4 class="font-bold truncate">${ch.teacherName}</h4></div>
+                    <div class="flex items-center space-x-2.5 sm:space-x-3 space-x-reverse overflow-hidden">
+                        <img src="${channel.thumbnail || 'https://via.placeholder.com/40'}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-slate-300 dark:border-slate-700 shrink-0" alt="">
+                        <div class="truncate">
+                            <h4 class="text-xs font-bold truncate">${channel.teacherName}</h4>
+                            <p class="text-[10px] ${isActive ? 'text-brand-100' : 'text-slate-500 dark:text-slate-400'} truncate">${channel.channelTitle}</p>
+                        </div>
                     </div>
-                    <button onclick="deleteYTChannel('${ch.id}', event)" class="opacity-100 sm:opacity-0 group-hover:opacity-100 hover:text-rose-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                    <button class="delete-btn opacity-100 sm:opacity-0 group-hover:opacity-100 p-1 hover:text-red-400 transition-opacity" title="حذف القناة">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
                 `;
-                card.onclick = () => { ytState.selectedChannelId = ch.id; renderChannelsList(); fetchAllYTContent(); };
-                list.appendChild(card);
+
+                card.onclick = () => selectChannel(channel.id);
+                card.querySelector('.delete-btn').onclick = (e) => deleteChannel(channel.id, e);
+                elements.channelsList.appendChild(card);
             });
         }
 
-        async function fetchChannelPlaylists(channelId) {
-            try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channelId}&maxResults=25&key=${apiKey}`);
-                const data = await res.json();
-                if (data.items) {
-                    return data.items.map(item => ({
-                        id: item.id,
-                        title: item.snippet.title,
-                        itemCount: item.contentDetails?.itemCount || 0,
-                        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || ''
-                    }));
-                }
-            } catch (e) { console.error(e); }
-            return [];
+        function selectChannel(channelId) {
+            state.selectedChannelId = channelId;
+            renderChannelsList();
+
+            if (channelId) {
+                const ch = state.channels.find(c => c.id === channelId);
+                elements.currentViewTitle.innerText = `مادة/مدرس: ${ch.teacherName}`;
+                elements.currentViewSubtitle.innerText = `قناة: ${ch.channelTitle}`;
+            }
+
+            fetchAllContent();
         }
 
-        async function fetchPlaylistPage(playlistId, teacherName) {
-            let fetched = { videos: [], shorts: [] };
+        async function fetchPlaylistPage(playlistId, teacherName, pageToken = '') {
+            let fetched = { videos: [], shorts: [], nextPageToken: null };
             try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=50&key=${apiKey}`);
-                const data = await res.json();
+                let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=50&key=${state.apiKey}`;
+                if (pageToken) url += `&pageToken=${pageToken}`;
+
+                let response = await fetch(url);
+                let data = await response.json();
+
                 if (data.items) {
                     data.items.forEach(item => {
                         if (item.snippet && item.snippet.resourceId) {
                             const title = item.snippet.title;
-                            const vObj = {
+                            const videoObj = {
                                 id: item.snippet.resourceId.videoId,
                                 title: title,
                                 thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
                                 rawDate: new Date(item.snippet.publishedAt),
-                                publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString('ar-EG'),
-                                teacherName: teacherName
+                                publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' }),
+                                teacherName: teacherName,
+                                channelTitle: item.snippet.channelTitle
                             };
+
                             if (title.toLowerCase().includes('#shorts') || title.toLowerCase().includes('#short')) {
-                                fetched.shorts.push(vObj);
+                                fetched.shorts.push(videoObj);
                             } else {
-                                fetched.videos.push(vObj);
+                                fetched.videos.push(videoObj);
                             }
                         }
                     });
                 }
-            } catch (e) { console.error(e); }
+                fetched.nextPageToken = data.nextPageToken || null;
+            } catch (err) { console.error(err); }
             return fetched;
         }
 
-        async function loadPlaylistVideos(playlistId, playlistTitle) {
-            document.getElementById('loading-spinner').classList.remove('hidden');
-            document.getElementById('videos-grid').innerHTML = '';
-            try {
-                const res = await fetchPlaylistPage(playlistId, playlistTitle);
-                ytState.videos = res.videos;
-                ytState.shorts = res.shorts;
-                ytState.activeTab = 'videos';
+        async function fetchAllContent() {
+            elements.loadingSpinner.classList.remove('hidden');
+            elements.loadMoreContainer.classList.add('hidden');
+            elements.videosGrid.innerHTML = '';
+            
+            state.videos = [];
+            state.shorts = [];
+            state.playlists = [];
+            state.channelPageTokens = {};
+            state.hasMore = false;
 
-                document.querySelectorAll('.yt-tab').forEach(b => {
-                    b.className = "yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap text-xs";
-                });
-                const vidTab = document.getElementById('yt-tab-videos');
-                if(vidTab) vidTab.className = "yt-tab px-3 py-1.5 rounded-xl bg-brand-600 text-white whitespace-nowrap text-xs";
+            const channelsToFetch = state.selectedChannelId 
+                ? state.channels.filter(c => c.id === state.selectedChannelId)
+                : state.channels;
 
-                document.getElementById('current-view-title').textContent = `قائمة التشغيل: ${playlistTitle}`;
-                document.getElementById('current-view-subtitle').textContent = 'فيديوهات قائمة التشغيل المحددة';
-                renderYTVideosGrid();
-            } catch (e) {
-                console.error(e);
-            } finally {
-                document.getElementById('loading-spinner').classList.add('hidden');
-            }
-        }
-
-        async function fetchAllYTContent() {
-            document.getElementById('loading-spinner').classList.remove('hidden');
-            ytState.videos = [];
-            ytState.shorts = [];
-            ytState.playlists = [];
-
-            const targets = ytState.selectedChannelId ? ytState.channels.filter(c => c.id === ytState.selectedChannelId) : ytState.channels;
-            for (const ch of targets) {
-                const res = await fetchPlaylistPage(ch.uploadsPlaylistId, ch.teacherName);
-                ytState.videos = ytState.videos.concat(res.videos);
-                ytState.shorts = ytState.shorts.concat(res.shorts);
-
-                if (ytState.selectedChannelId) {
-                    const pls = await fetchChannelPlaylists(ch.id);
-                    ytState.playlists = ytState.playlists.concat(pls);
-                }
-            }
-            ytState.videos.sort((a, b) => b.rawDate - a.rawDate);
-            ytState.shorts.sort((a, b) => b.rawDate - a.rawDate);
-
-            document.getElementById('loading-spinner').classList.add('hidden');
-            renderYTVideosGrid();
-        }
-
-        function switchYTTab(tab) {
-            ytState.activeTab = tab;
-            document.querySelectorAll('.yt-tab').forEach(b => {
-                b.className = "yt-tab px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 whitespace-nowrap text-xs";
-            });
-            event.target.className = "yt-tab px-3 py-1.5 rounded-xl bg-brand-600 text-white whitespace-nowrap text-xs";
-            renderYTVideosGrid();
-        }
-
-        function renderYTVideosGrid() {
-            const grid = document.getElementById('videos-grid');
-            grid.innerHTML = '';
-
-            let list = [];
-            if (ytState.activeTab === 'feed' || ytState.activeTab === 'videos') list = ytState.videos;
-            else if (ytState.activeTab === 'shorts') list = ytState.shorts;
-            else if (ytState.activeTab === 'playlists') list = ytState.playlists;
-            else if (ytState.activeTab === 'completed') list = ytState.videos.filter(v => ytState.completedVideos.includes(v.id));
-
-            // If playlists tab is active
-            if (ytState.activeTab === 'playlists') {
-                const query = ytState.globalSearchQuery;
-                const filteredPls = ytState.playlists.filter(p => !query || p.title.toLowerCase().includes(query));
-                if (filteredPls.length === 0) {
-                    grid.innerHTML = `<div class="col-span-full py-12 text-center text-xs text-slate-500">لا توجد قوائم تشغيل متاحة (اختر قناة معينة من القائمة الجانبية لعرض قوائم التشغيل الخاصة بها)</div>`;
-                    return;
-                }
-                filteredPls.forEach(pl => {
-                    const card = document.createElement('div');
-                    card.className = "bg-white dark:bg-surface-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 p-3 flex flex-col justify-between space-y-2 shadow-sm hover:border-brand-500 cursor-pointer transition-all group";
-                    card.innerHTML = `
-                        <div class="relative aspect-video rounded-xl overflow-hidden bg-black">
-                            <img src="${pl.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                            <div class="absolute bottom-2 left-2 bg-black/80 text-white text-[10px] px-2 py-0.5 rounded font-bold">
-                                ${pl.itemCount} فيديو
-                            </div>
-                        </div>
-                        <h4 class="text-xs font-bold line-clamp-2 group-hover:text-brand-600 transition-colors">${pl.title}</h4>
-                    `;
-                    card.onclick = () => loadPlaylistVideos(pl.id, pl.title);
-                    grid.appendChild(card);
-                });
+            if (channelsToFetch.length === 0) {
+                elements.loadingSpinner.classList.add('hidden');
+                renderCurrentGrid();
                 return;
             }
 
-            const query = ytState.globalSearchQuery;
-            const filtered = list.filter(item => {
+            for (const ch of channelsToFetch) {
+                const res = await fetchPlaylistPage(ch.uploadsPlaylistId, ch.teacherName);
+                state.videos = state.videos.concat(res.videos);
+                state.shorts = state.shorts.concat(res.shorts);
+                state.channelPageTokens[ch.uploadsPlaylistId] = res.nextPageToken;
+                if (res.nextPageToken) state.hasMore = true;
+            }
+
+            state.videos.sort((a, b) => b.rawDate - a.rawDate);
+            state.shorts.sort((a, b) => b.rawDate - a.rawDate);
+
+            elements.loadingSpinner.classList.add('hidden');
+            if (state.hasMore) elements.loadMoreContainer.classList.remove('hidden');
+
+            renderCurrentGrid();
+        }
+
+        async function fetchMoreContent() {
+            if (state.isLoadingMore || !state.hasMore) return;
+
+            state.isLoadingMore = true;
+            elements.btnLoadMore.innerText = 'جاري التحميل...';
+
+            const channelsToFetch = state.selectedChannelId 
+                ? state.channels.filter(c => c.id === state.selectedChannelId)
+                : state.channels;
+
+            let newlyVideos = [], newlyShorts = [], stillHasMore = false;
+
+            for (const ch of channelsToFetch) {
+                const token = state.channelPageTokens[ch.uploadsPlaylistId];
+                if (token) {
+                    const res = await fetchPlaylistPage(ch.uploadsPlaylistId, ch.teacherName, token);
+                    newlyVideos = newlyVideos.concat(res.videos);
+                    newlyShorts = newlyShorts.concat(res.shorts);
+                    state.channelPageTokens[ch.uploadsPlaylistId] = res.nextPageToken;
+                }
+                if (state.channelPageTokens[ch.uploadsPlaylistId]) stillHasMore = true;
+            }
+
+            state.hasMore = stillHasMore;
+            state.videos = state.videos.concat(newlyVideos).sort((a, b) => b.rawDate - a.rawDate);
+            state.shorts = state.shorts.concat(newlyShorts).sort((a, b) => b.rawDate - a.rawDate);
+
+            renderCurrentGrid();
+            state.isLoadingMore = false;
+            elements.btnLoadMore.innerText = 'تحميل المزيد من المحتوى';
+            if (!state.hasMore) elements.loadMoreContainer.classList.add('hidden');
+        }
+
+        function toggleCompleteActiveVideo() {
+            if (!state.activeVideoId) return;
+            const index = state.completedVideos.indexOf(state.activeVideoId);
+            if (index > -1) {
+                state.completedVideos.splice(index, 1);
+            } else {
+                state.completedVideos.push(state.activeVideoId);
+            }
+            localStorage.setItem('yt_study_completed', JSON.stringify(state.completedVideos));
+            updateCompleteButtonState();
+            renderCurrentGrid();
+        }
+
+        function updateCompleteButtonState() {
+            const isCompleted = state.completedVideos.includes(state.activeVideoId);
+            if (isCompleted) {
+                elements.btnToggleComplete.className = "bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 shadow";
+                elements.completeBtnText.innerText = "مكتمل ✓";
+            } else {
+                elements.btnToggleComplete.className = "bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0";
+                elements.completeBtnText.innerText = "تحديد كمكتمل";
+            }
+        }
+
+        function renderCurrentGrid() {
+            elements.videosGrid.innerHTML = '';
+
+            let listToRender = [];
+            if (state.activeTab === 'feed' || state.activeTab === 'videos') listToRender = state.videos;
+            else if (state.activeTab === 'shorts') listToRender = state.shorts;
+            else if (state.activeTab === 'completed') {
+                listToRender = state.videos.filter(v => state.completedVideos.includes(v.id));
+            }
+
+            const query = state.globalSearchQuery;
+            const filtered = listToRender.filter(item => {
                 if (!query) return true;
-                const title = item.title.toLowerCase();
-                const teacher = item.teacherName.toLowerCase();
-                return query.split(/\s+/).every(w => title.includes(w) || teacher.includes(w));
+                const title = (item.title || '').toLowerCase();
+                const teacher = (item.teacherName || '').toLowerCase();
+                const queryWords = query.split(/\s+/);
+                return queryWords.every(word => title.includes(word) || teacher.includes(word));
             });
 
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-12 text-center text-xs text-slate-500">لا توجد نتائج مطابقة</div>`;
+                elements.videosGrid.innerHTML = `
+                    <div class="col-span-full py-12 text-center bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                        <p class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400">لا توجد نتائج مطابقة لبحثك أو في هذا القسم</p>
+                    </div>
+                `;
                 return;
             }
 
             filtered.forEach(video => {
-                const isPlaying = ytState.activeVideoId === video.id;
-                const isCompleted = ytState.completedVideos.includes(video.id);
+                const isPlaying = state.activeVideoId === video.id;
+                const isCompleted = state.completedVideos.includes(video.id);
                 const card = document.createElement('div');
-                card.className = `bg-white dark:bg-surface-900 rounded-2xl overflow-hidden border ${isPlaying ? 'border-brand-500 shadow-md' : 'border-slate-200 dark:border-slate-800'} cursor-pointer flex flex-col group relative`;
+                card.className = `bg-white dark:bg-surface-900 rounded-xl overflow-hidden border ${isPlaying ? 'border-brand-500 shadow-lg' : 'border-slate-200 dark:border-slate-800'} transition-all cursor-pointer flex flex-col group shadow-sm`;
+
                 card.innerHTML = `
-                    <div class="relative ${ytState.activeTab === 'shorts' ? 'aspect-[9/16] max-h-64' : 'aspect-video'} bg-black overflow-hidden">
+                    <div class="relative ${state.activeTab === 'shorts' ? 'aspect-[9/16] max-h-60 sm:max-h-72 mx-auto w-full' : 'aspect-video'} bg-slate-950 overflow-hidden">
                         <img src="${video.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        ${isCompleted ? '<span class="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">مكتمل ✓</span>' : ''}
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div class="w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-play"></i></div>
-                        </div>
+                        ${isCompleted ? '<span class="absolute top-2 right-2 bg-green-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">مكتمل ✓</span>' : ''}
                     </div>
-                    <div class="p-3 flex-1 flex flex-col justify-between space-y-2">
-                        <h4 class="text-xs font-bold line-clamp-2">${video.title}</h4>
-                        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
-                            <span class="text-brand-600 font-bold">${video.teacherName}</span>
-                            <span>${video.publishedAt}</span>
+                    <div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between space-y-2">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-brand-500 transition-colors">${video.title}</h4>
+                        <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <span class="font-medium text-brand-600 dark:text-brand-400 truncate max-w-[60%]">${video.teacherName}</span>
+                            <span class="text-slate-400 shrink-0">${video.publishedAt}</span>
                         </div>
                     </div>
                 `;
-                card.onclick = () => playYTVideo(video.id, video.title, video.teacherName);
-                grid.appendChild(card);
+
+                card.onclick = () => playVideo(video.id, video.title, video.teacherName);
+                elements.videosGrid.appendChild(card);
             });
         }
 
-        function playYTVideo(id, title, teacher) {
-            ytState.activeVideoId = id;
-            localStorage.setItem('yt_study_last_video_id', id);
-            document.getElementById('player-section').classList.remove('hidden');
-            document.getElementById('youtube-iframe').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-            document.getElementById('active-video-title').textContent = title;
-            document.getElementById('active-video-channel').textContent = `المدرس: ${teacher}`;
-            updateYTCompleteBtn();
-            document.getElementById('player-section').scrollIntoView({ behavior: 'smooth' });
-            renderYTVideosGrid();
+        function playVideo(videoId, title, teacherName) {
+            state.activeVideoId = videoId;
+            localStorage.setItem('yt_study_last_video_id', videoId);
+
+            elements.playerSection.classList.remove('hidden');
+            elements.iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+
+            elements.activeVideoTitle.innerText = title;
+            elements.activeVideoChannel.innerText = `المدرس/المادة: ${teacherName}`;
+
+            updateCompleteButtonState();
+            renderCurrentGrid();
+            elements.playerSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function toggleCompleteActiveVideo() {
-            if (!ytState.activeVideoId) return;
-            const idx = ytState.completedVideos.indexOf(ytState.activeVideoId);
-            if (idx > -1) ytState.completedVideos.splice(idx, 1);
-            else ytState.completedVideos.push(ytState.activeVideoId);
-            localStorage.setItem('yt_study_completed', JSON.stringify(ytState.completedVideos));
-            updateYTCompleteBtn();
-            renderYTVideosGrid();
-        }
+        // Subject Progress Tracker Methods
+        function renderSubjectProgress() {
+            const tabsContainer = document.getElementById('subject-tabs-container');
+            const contentContainer = document.getElementById('subject-content-container');
+            
+            tabsContainer.innerHTML = '';
+            contentContainer.innerHTML = '';
 
-        function updateYTCompleteBtn() {
-            const isComp = ytState.completedVideos.includes(ytState.activeVideoId);
-            const btn = document.getElementById('btn-toggle-complete');
-            btn.className = isComp ? "bg-emerald-600 text-white px-3 py-1.5 rounded-xl text-xs font-semibold shadow" : "bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white px-3 py-1.5 rounded-xl text-xs font-semibold";
-            document.getElementById('complete-btn-text').textContent = isComp ? "مكتمل ✓" : "تحديد كمكتمل";
-        }
+            let totalTopicsCount = 0;
+            let completedTopicsCount = 0;
 
-        // --- VOCABULARY PLATFORM LOGIC ---
-        function switchVocabTab(tab) {
-            const manageSec = document.getElementById('vocab-section-manage');
-            const quizSec = document.getElementById('vocab-section-quiz');
-            const tabManage = document.getElementById('vocab-tab-manage');
-            const tabQuiz = document.getElementById('vocab-tab-quiz');
+            Object.keys(curriculumData).forEach(key => {
+                const subject = curriculumData[key];
+                const isActive = state.activeSubjectKey === key;
+                
+                totalTopicsCount += subject.topics.length;
+                const subjectCompleted = subject.topics.filter(t => state.completedTopics.includes(t.id)).length;
+                completedTopicsCount += subjectCompleted;
 
-            if (tab === 'manage') {
-                manageSec.classList.remove('hidden');
-                quizSec.classList.add('hidden');
-                tabManage.className = "px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold transition-all";
-                tabQuiz.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold hover:text-brand-600 transition-all";
-                renderVocabWords();
-            } else {
-                manageSec.classList.add('hidden');
-                quizSec.classList.remove('hidden');
-                tabQuiz.className = "px-4 py-2 rounded-lg bg-white dark:bg-surface-900 text-brand-600 shadow-sm text-xs font-semibold transition-all";
-                tabManage.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold hover:text-brand-600 transition-all";
-                if (vocabState.words.length < 2) {
-                    showToast('يجب إدخال كلمتين على الأقل لبدء الاختبار!', 'error');
-                    switchVocabTab('manage');
-                }
-            }
-        }
+                const tabBtn = document.createElement('button');
+                tabBtn.className = `px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                    isActive ? 'bg-brand-600 text-white shadow' : 'bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'
+                }`;
+                tabBtn.innerText = `${subject.title} (${subjectCompleted}/${subject.topics.length})`;
+                tabBtn.onclick = () => {
+                    state.activeSubjectKey = key;
+                    renderSubjectProgress();
+                };
+                tabsContainer.appendChild(tabBtn);
+            });
 
-        function saveVocabToStorage() {
-            localStorage.setItem('vocab_words', JSON.stringify(vocabState.words));
-            updateVocabCounts();
-        }
+            const overallPercent = Math.round((completedTopicsCount / (totalTopicsCount || 1)) * 100);
+            document.getElementById('overall-progress-text').innerText = `${overallPercent}% إجمالي الإنجاز الشامل`;
 
-        function updateVocabCounts() {
-            document.getElementById('word-count-badge').textContent = vocabState.words.length;
-            document.getElementById('total-count').textContent = vocabState.words.length;
-        }
+            const activeSub = curriculumData[state.activeSubjectKey];
+            if (!activeSub) return;
 
-        function addVocabWord(e) {
-            e.preventDefault();
-            const engInput = document.getElementById('eng-input');
-            const araInput = document.getElementById('ara-input');
-            const engVal = engInput.value.trim();
-            const araVal = araInput.value.trim();
-            if (!engVal || !araVal) return;
-
-            if (vocabState.words.some(w => w.eng.toLowerCase() === engVal.toLowerCase())) {
-                showToast('هذه الكلمة موجودة مسبقاً!', 'error');
-                return;
-            }
-
-            vocabState.words.unshift({ id: Date.now().toString(), eng: engVal, ara: araVal });
-            saveVocabToStorage();
-            renderVocabWords();
-            engInput.value = '';
-            araInput.value = '';
-            showToast('تمت إضافة الكلمة بنجاح!');
-        }
-
-        function deleteVocabWord(id) {
-            vocabState.words = vocabState.words.filter(w => w.id !== id);
-            saveVocabToStorage();
-            renderVocabWords();
-            showToast('تم حذف الكلمة');
-        }
-
-        function clearAllVocabWords() {
-            if (vocabState.words.length === 0) return;
-            if (confirm('مسح جميع الكلمات المحفوظة؟')) {
-                vocabState.words = [];
-                saveVocabToStorage();
-                renderVocabWords();
-                showToast('تم مسح جميع الكلمات');
-            }
-        }
-
-        function renderVocabWords() {
-            const grid = document.getElementById('words-grid');
-            const query = document.getElementById('vocab-search-input').value.toLowerCase();
-            const filtered = vocabState.words.filter(w => w.eng.toLowerCase().includes(query) || w.ara.includes(query));
-            grid.innerHTML = '';
-            filtered.forEach(w => {
-                const card = document.createElement('div');
-                card.className = "bg-slate-50 dark:bg-surface-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs";
-                card.innerHTML = `
-                    <div><h4 class="font-bold text-sm" dir="ltr">${w.eng}</h4><p class="text-slate-500">${w.ara}</p></div>
-                    <button onclick="deleteVocabWord('${w.id}')" class="text-slate-400 hover:text-rose-500 p-1.5"><i class="fa-solid fa-trash"></i></button>
+            activeSub.topics.forEach(topic => {
+                const isChecked = state.completedTopics.includes(topic.id);
+                const item = document.createElement('div');
+                item.className = "bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4 flex items-center justify-between gap-3 shadow-sm";
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500 cursor-pointer">
+                        <span class="text-xs sm:text-sm font-bold ${isChecked ? 'line-through text-slate-400' : 'text-slate-800 dark:text-slate-200'}">${topic.title}</span>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isChecked ? 'bg-green-500/10 text-green-500' : 'bg-slate-100 dark:bg-surface-800 text-slate-400'}">${isChecked ? 'مكتمل ✓' : 'قيد الدراسة'}</span>
                 `;
-                grid.appendChild(card);
+
+                item.querySelector('input').onclick = () => {
+                    if (state.completedTopics.includes(topic.id)) {
+                        state.completedTopics = state.completedTopics.filter(id => id !== topic.id);
+                    } else {
+                        state.completedTopics.push(topic.id);
+                    }
+                    localStorage.setItem('completed_study_topics', JSON.stringify(state.completedTopics));
+                    renderSubjectProgress();
+                };
+
+                contentContainer.appendChild(item);
             });
         }
 
-        function startVocabQuiz() {
-            if (vocabState.words.length < 2) {
-                showToast('أدخل كلمتين على الأقل لبدء الاختبار', 'error');
-                switchVocabTab('manage');
+        // Smart Scheduler Calculator
+        function calculateExamSchedule() {
+            const subjectKey = document.getElementById('schedule-subject').value;
+            const targetDateVal = document.getElementById('schedule-date').value;
+
+            if (!targetDateVal) {
+                alert('يرجى اختيار تاريخ الامتحان الحقيقي أولاً.');
                 return;
             }
-            const shuffled = [...vocabState.words].sort(() => 0.5 - Math.random());
-            vocabState.questions = shuffled.slice(0, Math.min(shuffled.length, 5));
-            vocabState.index = 0;
-            vocabState.score = 0;
 
-            document.getElementById('quiz-start-screen').classList.add('hidden');
-            document.getElementById('quiz-results-screen').classList.add('hidden');
-            document.getElementById('quiz-question-screen').classList.remove('hidden');
-            document.getElementById('quiz-footer').classList.remove('hidden');
-            loadVocabQuestion();
-        }
+            const targetDate = new Date(targetDateVal);
+            const today = new Date();
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        function loadVocabQuestion() {
-            vocabState.submitted = false;
-            document.getElementById('next-question-btn').classList.add('hidden');
-            const q = vocabState.questions[vocabState.index];
-            document.getElementById('question-word').textContent = q.eng;
+            if (diffDays <= 0) {
+                alert('يرجى اختيار تاريخ في المستقبل.');
+                return;
+            }
 
-            const wrongs = vocabState.words.filter(w => w.id !== q.id).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w.ara);
-            const opts = [...wrongs, q.ara].sort(() => 0.5 - Math.random());
+            const subject = curriculumData[subjectKey];
+            const remainingTopics = subject.topics.filter(t => !state.completedTopics.includes(t.id));
 
-            const container = document.getElementById('quiz-options');
-            container.innerHTML = '';
-            opts.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "p-3 rounded-xl bg-slate-50 dark:bg-surface-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-right hover:border-brand-500 transition-all";
-                btn.textContent = opt;
-                btn.onclick = () => selectVocabAnswer(opt, q.ara, btn);
-                container.appendChild(btn);
+            const resultContainer = document.getElementById('schedule-result');
+            const detailsDiv = document.getElementById('schedule-details');
+            resultContainer.classList.remove('hidden');
+
+            if (remainingTopics.length === 0) {
+                detailsDiv.innerHTML = `<p class="text-green-500 font-bold">عظيم جداً! لقد أكملت جميع مواضيع ${subject.title} بالفعل!</p>`;
+                return;
+            }
+
+            const topicsPerDay = (remainingTopics.length / diffDays).toFixed(1);
+
+            let html = `
+                <div class="p-3 bg-brand-500/10 border border-brand-500/20 rounded-xl text-brand-600 dark:text-brand-400 font-bold">
+                    المتبقي للامتحان: ${diffDays} يوم | عدد المواضيع المتبقية: ${remainingTopics.length} موضوع | المعدل المطلوب: ${topicsPerDay} موضوع/يوم
+                </div>
+                <div class="space-y-2 pt-2">
+            `;
+
+            remainingTopics.forEach((topic, idx) => {
+                const dayNum = Math.floor(idx / (topicsPerDay || 1)) + 1;
+                const slot = idx % 2 === 0 ? "الفترة الصباحية ☀️" : "الفترة المسائية 🌙";
+                html += `
+                    <div class="p-2.5 bg-slate-50 dark:bg-surface-950 rounded-lg flex items-center justify-between border border-slate-200 dark:border-slate-800">
+                        <span>اليوم ${dayNum} - ${slot}: <strong class="text-slate-800 dark:text-slate-200">${topic.title}</strong></span>
+                    </div>
+                `;
             });
-        }
 
-        function selectVocabAnswer(selected, correct, btn) {
-            if (vocabState.submitted) return;
-            vocabState.submitted = true;
-            if (selected === correct) {
-                vocabState.score++;
-                btn.className = "p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500 text-emerald-700 text-xs font-bold text-right";
-            } else {
-                btn.className = "p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-500 text-rose-700 text-xs font-bold text-right";
-                document.querySelectorAll('#quiz-options button').forEach(b => {
-                    if (b.textContent === correct) b.className = "p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500 text-emerald-700 text-xs font-bold text-right";
-                });
-            }
-            const nextBtn = document.getElementById('next-question-btn');
-            nextBtn.classList.remove('hidden');
-            nextBtn.textContent = vocabState.index === vocabState.questions.length - 1 ? 'عرض النتيجة' : 'السؤال التالي ←';
-        }
-
-        function nextVocabQuestion() {
-            vocabState.index++;
-            if (vocabState.index < vocabState.questions.length) {
-                loadVocabQuestion();
-            } else {
-                document.getElementById('quiz-question-screen').classList.add('hidden');
-                document.getElementById('quiz-footer').classList.add('hidden');
-                document.getElementById('quiz-results-screen').classList.remove('hidden');
-                document.getElementById('final-score-text').textContent = `النتيجة النهائية: ${vocabState.score} من ${vocabState.questions.length}`;
-            }
+            html += `</div>`;
+            detailsDiv.innerHTML = html;
         }
     </script>
 </body>
