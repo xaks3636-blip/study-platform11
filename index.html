@@ -145,10 +145,11 @@
                     </div>
 
                     <!-- Platform Navigation Tabs -->
-                    <div class="flex items-center gap-1 bg-slate-100 dark:bg-surface-800 p-1 rounded-xl text-xs font-bold">
+                    <div class="flex items-center gap-1 bg-slate-100 dark:bg-surface-800 p-1 rounded-xl text-xs font-bold overflow-x-auto">
                         <button id="nav-btn-yt" onclick="switchMainTab('yt')" class="px-3 py-1.5 rounded-lg transition-all bg-brand-600 text-white shadow">الدروس بدون تشتيت</button>
                         <button id="nav-btn-progress" onclick="switchMainTab('progress')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">تتبع التقدم الدراسي</button>
                         <button id="nav-btn-scheduler" onclick="switchMainTab('scheduler')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">جدول الامتحانات</button>
+                        <button id="nav-btn-pomodoro" onclick="switchMainTab('pomodoro')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">بومودورو التدريجي</button>
                     </div>
 
                     <!-- Global Flexible Search & Actions -->
@@ -330,6 +331,53 @@
                 <div id="schedule-details" class="space-y-3 text-xs"></div>
             </div>
         </div>
+
+        <!-- VIEW 4: PROGRESSIVE POMODORO TIMER -->
+        <div id="view-pomodoro" class="hidden max-w-2xl mx-auto px-3 sm:px-6 lg:px-8 py-8 w-full space-y-6 fade-in text-center">
+            <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+                
+                <div>
+                    <span class="inline-block bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 text-[11px] font-bold px-3 py-1 rounded-full uppercase mb-2">
+                        التدريب التدريجي للتركيز
+                    </span>
+                    <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">مؤقت بومودورو التدريجي</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">تدرج في وقت الدراسة والتركيز خطوة بخطوة للوصول إلى هدف الـ 50 دقيقة دراسة و10 دقائق استراحة بسهولة وبدون إجهاد.</p>
+                </div>
+
+                <!-- Level Selector (Progressive Stepper) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
+                    <button onclick="setPomodoroLevel(1)" id="pomo-lvl-1" class="p pomo-lvl-btn bg-brand-600 text-white rounded-xl py-2.5 border border-brand-500 shadow">
+                        المستوى 1<br><span class="text-[10px] font-normal opacity-90">25د دراسة / 5د بريك</span>
+                    </button>
+                    <button onclick="setPomodoroLevel(2)" id="pomo-lvl-2" class="pomo-lvl-btn bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 rounded-xl py-2.5 border border-slate-200 dark:border-slate-700">
+                        المستوى 2<br><span class="text-[10px] font-normal opacity-90">35د دراسة / 7د بريك</span>
+                    </button>
+                    <button onclick="setPomodoroLevel(3)" id="pomo-lvl-3" class="pomo-lvl-btn bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 rounded-xl py-2.5 border border-slate-200 dark:border-slate-700">
+                        المستوى 3<br><span class="text-[10px] font-normal opacity-90">45د دراسة / 10د بريك</span>
+                    </button>
+                    <button onclick="setPomodoroLevel(4)" id="pomo-lvl-4" class="pomo-lvl-btn bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 rounded-xl py-2.5 border border-slate-200 dark:border-slate-700">
+                        المستوى الهدف 🔥<br><span class="text-[10px] font-normal opacity-90">50د دراسة / 10د بريك</span>
+                    </button>
+                </div>
+
+                <!-- Big Timer Clock View -->
+                <div class="py-6 bg-slate-50 dark:bg-surface-950 rounded-2xl border border-slate-200 dark:border-slate-800/80">
+                    <span id="pomo-mode-badge" class="text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2">فترة التركيز والدراسة 🧠</span>
+                    <div id="pomo-timer-display" class="text-5xl sm:text-6xl font-black tracking-widest text-slate-900 dark:text-white font-mono">25:00</div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center justify-center gap-3">
+                    <button id="pomo-start-btn" onclick="togglePomodoroTimer()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-brand-600/30 transition-all">
+                        بدء الدراسة 🚀
+                    </button>
+                    <button onclick="resetPomodoroTimer()" class="bg-slate-200 dark:bg-surface-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold px-5 py-3 rounded-xl text-xs transition-colors">
+                        إعادة ضبط
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- Modal: Add Channel / Teacher -->
@@ -460,6 +508,21 @@
             isLoadingMore: false
         };
 
+        // Pomodoro State
+        const pomodoroLevels = {
+            1: { study: 25, break: 5 },
+            2: { study: 35, break: 7 },
+            3: { study: 45, break: 10 },
+            4: { study: 50, break: 10 }
+        };
+        let pomoState = {
+            level: 1,
+            isStudyMode: true,
+            isRunning: false,
+            secondsLeft: 25 * 60,
+            timerInterval: null
+        };
+
         // DOM Elements
         const elements = {
             channelsList: document.getElementById('channels-list'),
@@ -504,7 +567,7 @@
         }
 
         function switchMainTab(tabKey) {
-            ['yt', 'progress', 'scheduler'].forEach(key => {
+            ['yt', 'progress', 'scheduler', 'pomodoro'].forEach(key => {
                 document.getElementById(`view-${key}`).classList.add('hidden');
                 document.getElementById(`nav-btn-${key}`).className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500";
             });
@@ -1068,6 +1131,90 @@
 
             html += `</div>`;
             detailsDiv.innerHTML = html;
+        }
+
+        // Pomodoro Progressive Logic
+        function setPomodoroLevel(lvl) {
+            pomoState.level = lvl;
+            pomoState.isStudyMode = true;
+            resetPomodoroTimer();
+
+            document.querySelectorAll('.pomo-lvl-btn').forEach((btn, idx) => {
+                if (idx + 1 === lvl) {
+                    btn.className = "pomo-lvl-btn bg-brand-600 text-white rounded-xl py-2.5 border border-brand-500 shadow font-bold";
+                } else {
+                    btn.className = "pomo-lvl-btn bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 rounded-xl py-2.5 border border-slate-200 dark:border-slate-700 font-bold";
+                }
+            });
+        }
+
+        function updatePomodoroDisplay() {
+            const minutes = Math.floor(pomoState.secondsLeft / 60);
+            const seconds = pomoState.secondsLeft % 60;
+            const formatted = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('pomo-timer-display').innerText = formatted;
+        }
+
+        function togglePomodoroTimer() {
+            const btn = document.getElementById('pomo-start-btn');
+            if (pomoState.isRunning) {
+                clearInterval(pomoState.timerInterval);
+                pomoState.isRunning = false;
+                btn.innerText = "استئناف الدراسة 🚀";
+                btn.className = "bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-brand-600/30 transition-all";
+            } else {
+                pomoState.isRunning = true;
+                btn.innerText = "إيقاف مؤقت ⏸️";
+                btn.className = "bg-amber-600 hover:bg-amber-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-amber-600/30 transition-all";
+
+                pomoState.timerInterval = setInterval(() => {
+                    if (pomoState.secondsLeft > 0) {
+                        pomoState.secondsLeft--;
+                        updatePomodoroDisplay();
+                    } else {
+                        clearInterval(pomoState.timerInterval);
+                        pomoState.isRunning = false;
+                        
+                        // Switch mode
+                        pomoState.isStudyMode = !pomoState.isStudyMode;
+                        const lvlConfig = pomodoroLevels[pomoState.level];
+                        pomoState.secondsLeft = (pomoState.isStudyMode ? lvlConfig.study : lvlConfig.break) * 60;
+
+                        const badge = document.getElementById('pomo-mode-badge');
+                        if (pomoState.isStudyMode) {
+                            badge.innerText = "فترة التركيز والدراسة 🧠";
+                            badge.className = "text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2";
+                            alert("انتهت الاستراحة! حان وقت التركيز والدراسة 🚀");
+                        } else {
+                            badge.innerText = "فترة الاستراحة والراحة ☕";
+                            badge.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-2";
+                            alert("أحسنت! أتممت فترة التركيز، حان وقت الاستراحة ☕");
+                        }
+
+                        updatePomodoroDisplay();
+                        btn.innerText = "بدء المرحلة التالية 🚀";
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetPomodoroTimer() {
+            clearInterval(pomoState.timerInterval);
+            pomoState.isRunning = false;
+            pomoState.isStudyMode = true;
+            
+            const lvlConfig = pomodoroLevels[pomoState.level];
+            pomoState.secondsLeft = lvlConfig.study * 60;
+
+            const badge = document.getElementById('pomo-mode-badge');
+            badge.innerText = "فترة التركيز والدراسة 🧠";
+            badge.className = "text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2";
+
+            const btn = document.getElementById('pomo-start-btn');
+            btn.innerText = "بدء الدراسة 🚀";
+            btn.className = "bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-brand-600/30 transition-all";
+
+            updatePomodoroDisplay();
         }
     </script>
 </body>
