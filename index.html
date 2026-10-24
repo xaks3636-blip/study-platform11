@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة الدراسة التعليمية - متابعة الدروس بدون تشويش</title>
+    <title>منصة أحمد بن علي التعليمية - متابعة الدروس بدون تشويش</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -98,14 +100,12 @@
     <div id="welcome-screen" class="fixed inset-0 z-50 bg-slate-100 dark:bg-surface-950 flex flex-col items-center justify-center p-4 text-center fade-in">
         <div class="max-w-md w-full bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
             
-            <!-- Badge above Logo -->
             <div>
                 <span class="inline-block bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider mb-2">
                     منهج 2027 المحدث
                 </span>
             </div>
 
-            <!-- Crisp Square Blue High Resolution Logo -->
             <div class="w-16 h-16 rounded-2xl bg-brand-600 flex items-center justify-center font-bold text-white shadow-xl shadow-brand-600/30 mx-auto shrink-0">
                 <svg class="w-9 h-9 fill-current" viewBox="0 0 24 24">
                     <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
@@ -114,13 +114,12 @@
 
             <div class="space-y-2">
                 <h1 class="text-2xl font-black text-slate-900 dark:text-white">منصة أحمد بن علي التعليمية</h1>
-                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">منصتك الشاملة لمتابعة الدروس بدون تشتيت، تتبع التقدم الدراسي بالمواضيع الدقيقة، وتخطيط الامتحانات اليومية.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">منصتك الشاملة لمتابعة الدروس بدون تشتيت، تتبع التقدم الدراسي بالمواضيع الدقيقة، وإدارة المفردات والتأهيل النفسي والدراسي.</p>
             </div>
 
-            <!-- Big Blue Action Button -->
             <button onclick="enterPlatform()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2 text-sm">
                 <span>الدخول إلى المنصة</span>
-                <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                <i class="fa-solid fa-arrow-left"></i>
             </button>
         </div>
     </div>
@@ -147,8 +146,8 @@
                     <!-- Platform Navigation Tabs -->
                     <div class="flex items-center gap-1 bg-slate-100 dark:bg-surface-800 p-1 rounded-xl text-xs font-bold overflow-x-auto">
                         <button id="nav-btn-yt" onclick="switchMainTab('yt')" class="px-3 py-1.5 rounded-lg transition-all bg-brand-600 text-white shadow">الدروس بدون تشتيت</button>
+                        <button id="nav-btn-vocab" onclick="switchMainTab('vocab')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">حفظ واختبار المفردات</button>
                         <button id="nav-btn-progress" onclick="switchMainTab('progress')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">تتبع التقدم الدراسي</button>
-                        <button id="nav-btn-scheduler" onclick="switchMainTab('scheduler')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">جدول الامتحانات</button>
                         <button id="nav-btn-pomodoro" onclick="switchMainTab('pomodoro')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">بومودورو التدريجي</button>
                     </div>
 
@@ -229,7 +228,7 @@
                         </div>
                     </div>
                     <button id="btn-play-next" class="bg-white text-brand-700 hover:bg-brand-50 font-bold px-3 sm:px-4 py-2 rounded-lg text-xs transition-colors shrink-0 shadow text-center">
-                        تشغيل المحاضرة التالية ➔
+                        تشغيل المحاضرة التالية
                     </button>
                 </section>
 
@@ -275,7 +274,166 @@
             </main>
         </div>
 
-        <!-- VIEW 2: SUBJECT TOPICS PROGRESS TRACKER -->
+        <!-- VIEW 2: ENGLISH VOCABULARY & QUIZ MANAGER -->
+        <div id="view-vocab" class="hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full space-y-6 fade-in">
+            <!-- Toast Notification -->
+            <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-3">
+                <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+                <span id="toast-message">رسالة تنبيه</span>
+            </div>
+
+            <div class="flex bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 p-1.5 rounded-2xl gap-2 text-xs font-bold w-fit">
+                <button onclick="switchVocabTab('manage')" id="vtab-manage" class="px-5 py-2.5 rounded-xl transition-all bg-brand-600 text-white shadow">
+                    <i class="fa-solid fa-book-open ml-1"></i> إدارة المفردات (<span id="word-count-badge">0</span>)
+                </button>
+                <button onclick="switchVocabTab('quiz')" id="vtab-quiz" class="px-5 py-2.5 rounded-xl transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">
+                    <i class="fa-solid fa-gamepad ml-1"></i> بدء الاختبار التفاعلي
+                </button>
+            </div>
+
+            <!-- VOCAB SECTION 1: MANAGE WORDS -->
+            <section id="vsec-manage" class="space-y-6">
+                <!-- Input Card -->
+                <div class="bg-white dark:bg-surface-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <h2 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-brand-600"></i> إضافة كلمة جديدة للمفردات
+                    </h2>
+                    <form id="word-form" onsubmit="addWord(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">الكلمة بالإنجليزية (English)</label>
+                            <input type="text" id="eng-input" required placeholder="e.g. Broken, Amazing..." dir="ltr"
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-surface-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-brand-600 text-xs text-left">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">الترجمة بالعربية</label>
+                            <input type="text" id="ara-input" required placeholder="مثال: مكسور، مذهل..."
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-surface-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-brand-600 text-xs">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end mt-2">
+                            <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2 text-xs">
+                                <i class="fa-solid fa-bookmark"></i> حفظ الكلمة في الذاكرة
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Words List Card -->
+                <div class="bg-white dark:bg-surface-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-800 dark:text-slate-100">قائمة الكلمات المحفوظة</h2>
+                            <p class="text-xs text-slate-500">جميع الكلمات التي أضفتها محفوظة بشكل دائم في المتصفح</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brand-50 dark:bg-surface-800 text-brand-700 dark:text-brand-400 text-xs font-bold px-3 py-1.5 rounded-xl border border-brand-100 dark:border-slate-700">
+                                الإجمالي: <span id="total-count">0</span> كلمة
+                            </span>
+                            <button onclick="clearAllWords()" class="bg-rose-50 dark:bg-rose-950/30 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border border-rose-100 dark:border-rose-900">
+                                <i class="fa-solid fa-trash-can ml-1"></i> مسح الكل
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search Filter -->
+                    <div class="mb-4 relative">
+                        <span class="absolute right-3.5 top-3 text-slate-400"><i class="fa-solid fa-search"></i></span>
+                        <input type="text" id="search-input" oninput="renderWords()" placeholder="ابحث في كلماتك المحفوظة..." 
+                            class="w-full pr-10 pl-4 py-2 bg-slate-50 dark:bg-surface-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-brand-600">
+                    </div>
+
+                    <!-- Words Container Grid -->
+                    <div id="words-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
+                        <!-- Dynamic Items -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="empty-state" class="hidden text-center py-12">
+                        <div class="w-16 h-16 bg-brand-50 dark:bg-surface-800 text-brand-500 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-700 dark:text-slate-300 text-sm">لا توجد كلمات محفوظة بعد</h3>
+                        <p class="text-xs text-slate-400 mt-1">قم بإضافة بعض الكلمات وابدأ التدريب عليها!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VOCAB SECTION 2: QUIZ -->
+            <section id="vsec-quiz" class="hidden space-y-6">
+                <div class="bg-white dark:bg-surface-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm min-h-[380px] flex flex-col justify-between">
+                    
+                    <div id="quiz-header-area">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-puzzle-piece text-brand-600"></i> اختبار المفردات التفاعلي
+                            </h2>
+                            <span id="quiz-progress-indicator" class="text-xs font-bold text-brand-600 bg-brand-50 dark:bg-surface-800 px-3 py-1.5 rounded-xl border border-brand-100 dark:border-slate-700 hidden">
+                                السؤال <span id="current-q-num">1</span> من <span id="total-q-num">5</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="quiz-body" class="my-auto">
+                        <!-- Initial Start Screen -->
+                        <div id="quiz-start-screen" class="text-center py-8">
+                            <div class="w-16 h-16 bg-brand-600 text-white rounded-2xl shadow-lg flex items-center justify-center mx-auto mb-4 text-2xl">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">اختبر حفظك للمفردات الآن</h3>
+                            <p class="text-xs text-slate-500 max-w-md mx-auto mb-6">سنقوم بعرض الكلمات الإنجليزية وعليك اختيار الترجمة الصحيحة من بين الخيارات المتعددة لاختبار استيعابك.</p>
+                            <button onclick="startQuiz()" id="start-quiz-btn" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-2xl shadow-md transition-all text-xs">
+                                <i class="fa-solid fa-play ml-2"></i> ابدأ الاختبار الآن
+                            </button>
+                        </div>
+
+                        <!-- Question Active Screen -->
+                        <div id="quiz-question-screen" class="hidden space-y-6">
+                            <div class="text-center bg-brand-50/50 dark:bg-surface-950 p-6 rounded-2xl border border-brand-100 dark:border-slate-800">
+                                <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider">ما هي ترجمة الكلمة التالية؟</span>
+                                <h3 id="question-word" class="text-2xl font-black text-brand-900 dark:text-brand-400 mt-2 mb-1" dir="ltr">Word</h3>
+                            </div>
+
+                            <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <!-- Options injected dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Quiz Results Screen -->
+                        <div id="quiz-results-screen" class="hidden text-center py-8 space-y-4">
+                            <div id="result-icon-container" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl shadow-md">
+                                <i id="result-icon" class="fa-solid fa-trophy"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100" id="result-title">أحسنت صنعاً</h3>
+                            <p class="text-xs text-slate-500" id="result-subtitle">لقد أكملت اختبار المفردات بنجاح.</p>
+                            
+                            <div class="inline-flex items-center gap-4 bg-slate-50 dark:bg-surface-950 px-6 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 my-2">
+                                <div>
+                                    <span class="block text-[10px] text-slate-400">النتيجة النهائية</span>
+                                    <span class="text-lg font-black text-brand-600" id="final-score-text">0 / 0</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 flex justify-center gap-3">
+                                <button onclick="startQuiz()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition-all text-xs">
+                                    <i class="fa-solid fa-rotate-right ml-2"></i> إعادة الاختبار
+                                </button>
+                                <button onclick="switchVocabTab('manage')" class="bg-slate-100 dark:bg-surface-800 text-slate-700 dark:text-slate-300 font-bold px-6 py-2.5 rounded-xl text-xs transition-all">
+                                    العودة للقائمة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="quiz-footer" class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center hidden">
+                        <span class="text-xs text-slate-400">اختر الإجابة الصحيحة للمتابعة</span>
+                        <button id="next-question-btn" onclick="nextQuestion()" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-5 py-2 rounded-xl text-xs transition-all hidden">
+                            السؤال التالي <i class="fa-solid fa-arrow-left mr-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 3: SUBJECT TOPICS PROGRESS TRACKER -->
         <div id="view-progress" class="hidden max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full space-y-6 fade-in">
             <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
@@ -298,40 +456,6 @@
             </div>
         </div>
 
-        <!-- VIEW 3: SMART EXAM SCHEDULER -->
-        <div id="view-scheduler" class="hidden max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full space-y-6 fade-in">
-            <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
-                <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">مخطط وجدول الامتحانات الذكي</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">حدد تاريخ امتحانك والمواضيع المتبقية ليقوم النظام بحساب الخطة وحساب المواضيع المطلوبة منك صباحاً ومساءً.</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                    <div>
-                        <label class="block text-xs font-bold mb-1">المادة</label>
-                        <select id="schedule-subject" class="w-full bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs font-semibold">
-                            <option value="grammar">قواعد اللغة العربية</option>
-                            <option value="literature">الأدب والنصوص</option>
-                            <option value="english">اللغة الإنجليزية (8 Units)</option>
-                            <option value="math">الرياضيات</option>
-                            <option value="physics">الفيزياء</option>
-                            <option value="chemistry">الكيمياء</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold mb-1">تاريخ الامتحان</label>
-                        <input type="date" id="schedule-date" class="w-full bg-slate-50 dark:bg-surface-950 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-xs font-semibold">
-                    </div>
-                </div>
-
-                <button onclick="calculateExamSchedule()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2.5 rounded-xl text-xs shadow transition-all">حساب وإنشاء جدول الدراسة الذكي</button>
-            </div>
-
-            <!-- Generated Schedule Result -->
-            <div id="schedule-result" class="hidden bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
-                <h3 class="text-sm font-bold text-slate-900 dark:text-white">جدول التوزيع اليومي المقترح</h3>
-                <div id="schedule-details" class="space-y-3 text-xs"></div>
-            </div>
-        </div>
-
         <!-- VIEW 4: PROGRESSIVE POMODORO TIMER -->
         <div id="view-pomodoro" class="hidden max-w-2xl mx-auto px-3 sm:px-6 lg:px-8 py-8 w-full space-y-6 fade-in text-center">
             <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
@@ -344,9 +468,9 @@
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">تدرج في وقت الدراسة والتركيز خطوة بخطوة للوصول إلى هدف الـ 50 دقيقة دراسة و10 دقائق استراحة بسهولة وبدون إجهاد.</p>
                 </div>
 
-                <!-- Level Selector (Progressive Stepper) -->
+                <!-- Level Selector -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
-                    <button onclick="setPomodoroLevel(1)" id="pomo-lvl-1" class="p pomo-lvl-btn bg-brand-600 text-white rounded-xl py-2.5 border border-brand-500 shadow">
+                    <button onclick="setPomodoroLevel(1)" id="pomo-lvl-1" class="pomo-lvl-btn bg-brand-600 text-white rounded-xl py-2.5 border border-brand-500 shadow">
                         المستوى 1<br><span class="text-[10px] font-normal opacity-90">25د دراسة / 5د بريك</span>
                     </button>
                     <button onclick="setPomodoroLevel(2)" id="pomo-lvl-2" class="pomo-lvl-btn bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 rounded-xl py-2.5 border border-slate-200 dark:border-slate-700">
@@ -356,20 +480,20 @@
                         المستوى 3<br><span class="text-[10px] font-normal opacity-90">45د دراسة / 10د بريك</span>
                     </button>
                     <button onclick="setPomodoroLevel(4)" id="pomo-lvl-4" class="pomo-lvl-btn bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 rounded-xl py-2.5 border border-slate-200 dark:border-slate-700">
-                        المستوى الهدف 🔥<br><span class="text-[10px] font-normal opacity-90">50د دراسة / 10د بريك</span>
+                        المستوى الهدف<br><span class="text-[10px] font-normal opacity-90">50د دراسة / 10د بريك</span>
                     </button>
                 </div>
 
                 <!-- Big Timer Clock View -->
                 <div class="py-6 bg-slate-50 dark:bg-surface-950 rounded-2xl border border-slate-200 dark:border-slate-800/80">
-                    <span id="pomo-mode-badge" class="text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2">فترة التركيز والدراسة 🧠</span>
+                    <span id="pomo-mode-badge" class="text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2">فترة التركيز والدراسة</span>
                     <div id="pomo-timer-display" class="text-5xl sm:text-6xl font-black tracking-widest text-slate-900 dark:text-white font-mono">25:00</div>
                 </div>
 
                 <!-- Controls -->
                 <div class="flex items-center justify-center gap-3">
                     <button id="pomo-start-btn" onclick="togglePomodoroTimer()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-brand-600/30 transition-all">
-                        بدء الدراسة 🚀
+                        بدء الدراسة
                     </button>
                     <button onclick="resetPomodoroTimer()" class="bg-slate-200 dark:bg-surface-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold px-5 py-3 rounded-xl text-xs transition-colors">
                         إعادة ضبط
@@ -412,7 +536,7 @@
 
     <!-- Main Logic Script -->
     <script>
-        // Data Structure for Topics & Detailed Curriculum
+        // Data Structure for Topics
         const curriculumData = {
             grammar: {
                 title: "قواعد اللغة العربية",
@@ -508,6 +632,20 @@
             isLoadingMore: false
         };
 
+        // Vocab State Variables
+        let words = JSON.parse(localStorage.getItem('vocab_words')) || [
+            { id: '1', eng: 'Broken', ara: 'مكسور' },
+            { id: '2', eng: 'Amazing', ara: 'مذهل' },
+            { id: '3', eng: 'Challenge', ara: 'تحدي' },
+            { id: '4', eng: 'Success', ara: 'نجاح' },
+            { id: '5', eng: 'Knowledge', ara: 'معرفة' }
+        ];
+
+        let currentQuizQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let isAnswerSubmitted = false;
+
         // Pomodoro State
         const pomodoroLevels = {
             1: { study: 25, break: 5 },
@@ -564,10 +702,12 @@
             renderChannelsList();
             fetchAllContent();
             renderSubjectProgress();
+            renderWords();
+            updateCounts();
         }
 
         function switchMainTab(tabKey) {
-            ['yt', 'progress', 'scheduler', 'pomodoro'].forEach(key => {
+            ['yt', 'vocab', 'progress', 'pomodoro'].forEach(key => {
                 document.getElementById(`view-${key}`).classList.add('hidden');
                 document.getElementById(`nav-btn-${key}`).className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500";
             });
@@ -580,16 +720,13 @@
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
 
-            // Setup Event Listeners
             document.getElementById('btn-add-channel').addEventListener('click', () => openModal(elements.modalAddChannel));
             elements.btnLoadMore.addEventListener('click', () => fetchMoreContent());
             elements.btnThemeToggle.addEventListener('click', toggleTheme);
             elements.btnToggleComplete.addEventListener('click', toggleCompleteActiveVideo);
 
             document.querySelectorAll('.btn-close-modal').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    closeModal(elements.modalAddChannel);
-                });
+                btn.addEventListener('click', () => closeModal(elements.modalAddChannel));
             });
 
             elements.formAddChannel.addEventListener('submit', handleAddChannel);
@@ -654,7 +791,6 @@
             elements.formAddChannel.reset();
         }
 
-        // Parse Channel Input
         function parseChannelInput(input) {
             input = input.trim();
             if (input.startsWith('UC') && input.length === 24) return { type: 'id', value: input };
@@ -672,7 +808,6 @@
             return { type: 'handle', value: '@' + input };
         }
 
-        // Fetch Channel Details
         async function fetchChannelDetails(parsed) {
             const key = state.apiKey;
             let url = parsed.type === 'id'
@@ -696,7 +831,6 @@
             };
         }
 
-        // Add Channel
         async function handleAddChannel(e) {
             e.preventDefault();
             elements.addChannelError.classList.add('hidden');
@@ -737,7 +871,6 @@
             }
         }
 
-        // Delete Channel
         function deleteChannel(channelId, event) {
             event.stopPropagation();
             if (confirm('هل أنت تأكد من إزالة هذا المدرس والقناة من القائمة؟')) {
@@ -749,7 +882,6 @@
             }
         }
 
-        // Render Channels
         function renderChannelsList() {
             elements.channelsCount.innerText = state.channels.length;
             elements.channelsList.innerHTML = '';
@@ -816,6 +948,24 @@
             fetchAllContent();
         }
 
+        // Fetch Playlists correctly
+        async function fetchChannelPlaylists(channelId) {
+            try {
+                const url = `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channelId}&maxResults=25&key=${state.apiKey}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.items) {
+                    return data.items.map(item => ({
+                        id: item.id,
+                        title: item.snippet.title,
+                        itemCount: item.contentDetails?.itemCount || 0,
+                        thumbnail: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || ''
+                    }));
+                }
+            } catch (e) { console.error(e); }
+            return [];
+        }
+
         async function fetchPlaylistPage(playlistId, teacherName, pageToken = '') {
             let fetched = { videos: [], shorts: [], nextPageToken: null };
             try {
@@ -852,6 +1002,35 @@
             return fetched;
         }
 
+        async function loadPlaylistVideos(playlistId, playlistTitle) {
+            elements.loadingSpinner.classList.remove('hidden');
+            elements.videosGrid.innerHTML = '';
+            try {
+                const res = await fetchPlaylistPage(playlistId, playlistTitle);
+                state.videos = res.videos;
+                state.shorts = res.shorts;
+                state.activeTab = 'videos';
+
+                document.querySelectorAll('#content-tabs .tab-btn').forEach(b => {
+                    if (b.getAttribute('data-tab') === 'videos') {
+                        b.classList.add('bg-brand-600', 'text-white');
+                        b.classList.remove('bg-slate-100', 'dark:bg-surface-800', 'text-slate-600', 'dark:text-slate-300');
+                    } else {
+                        b.classList.remove('bg-brand-600', 'text-white');
+                        b.classList.add('bg-slate-100', 'dark:bg-surface-800', 'text-slate-600', 'dark:text-slate-300');
+                    }
+                });
+
+                elements.currentViewTitle.innerText = `قائمة التشغيل: ${playlistTitle}`;
+                elements.currentViewSubtitle.innerText = 'فيديوهات قائمة التشغيل المحددة';
+                renderCurrentGrid();
+            } catch (e) {
+                console.error(e);
+            } finally {
+                elements.loadingSpinner.classList.add('hidden');
+            }
+        }
+
         async function fetchAllContent() {
             elements.loadingSpinner.classList.remove('hidden');
             elements.loadMoreContainer.classList.add('hidden');
@@ -879,6 +1058,11 @@
                 state.shorts = state.shorts.concat(res.shorts);
                 state.channelPageTokens[ch.uploadsPlaylistId] = res.nextPageToken;
                 if (res.nextPageToken) state.hasMore = true;
+
+                if (state.selectedChannelId) {
+                    const pls = await fetchChannelPlaylists(ch.id);
+                    state.playlists = state.playlists.concat(pls);
+                }
             }
 
             state.videos.sort((a, b) => b.rawDate - a.rawDate);
@@ -953,6 +1137,7 @@
             let listToRender = [];
             if (state.activeTab === 'feed' || state.activeTab === 'videos') listToRender = state.videos;
             else if (state.activeTab === 'shorts') listToRender = state.shorts;
+            else if (state.activeTab === 'playlists') listToRender = state.playlists;
             else if (state.activeTab === 'completed') {
                 listToRender = state.videos.filter(v => state.completedVideos.includes(v.id));
             }
@@ -972,6 +1157,25 @@
                         <p class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400">لا توجد نتائج مطابقة لبحثك أو في هذا القسم</p>
                     </div>
                 `;
+                return;
+            }
+
+            if (state.activeTab === 'playlists') {
+                filtered.forEach(pl => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white dark:bg-surface-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 p-2.5 sm:p-3 flex flex-col justify-between space-y-2.5 shadow-sm hover:border-brand-500 cursor-pointer transition-all group";
+                    card.innerHTML = `
+                        <div class="relative aspect-video rounded-lg overflow-hidden bg-slate-900">
+                            <img src="${pl.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute bottom-1.5 left-1.5 bg-black/80 text-white text-[10px] px-2 py-0.5 rounded font-bold">
+                                ${pl.itemCount} فيديو
+                            </div>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-clamp-2 group-hover:text-brand-500 transition-colors">${pl.title}</h4>
+                    `;
+                    card.onclick = () => loadPlaylistVideos(pl.id, pl.title);
+                    elements.videosGrid.appendChild(card);
+                });
                 return;
             }
 
@@ -1013,6 +1217,280 @@
             updateCompleteButtonState();
             renderCurrentGrid();
             elements.playerSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- VOCABULARY TAB METHODS ---
+        function switchVocabTab(tabName) {
+            const vsecManage = document.getElementById('vsec-manage');
+            const vsecQuiz = document.getElementById('vsec-quiz');
+            const vtabManage = document.getElementById('vtab-manage');
+            const vtabQuiz = document.getElementById('vtab-quiz');
+
+            if (tabName === 'manage') {
+                vsecManage.classList.remove('hidden');
+                vsecQuiz.classList.add('hidden');
+                vtabManage.className = "px-5 py-2.5 rounded-xl transition-all bg-brand-600 text-white shadow";
+                vtabQuiz.className = "px-5 py-2.5 rounded-xl transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500";
+                renderWords();
+            } else {
+                vsecManage.classList.add('hidden');
+                vsecQuiz.classList.remove('hidden');
+                vtabQuiz.className = "px-5 py-2.5 rounded-xl transition-all bg-brand-600 text-white shadow";
+                vtabManage.className = "px-5 py-2.5 rounded-xl transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500";
+                
+                if (words.length < 2) {
+                    showToast('يجب إدخال كلمتين على الأقل لبدء الاختبار', 'error');
+                    switchVocabTab('manage');
+                }
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.textContent = message;
+            if (type === 'success') {
+                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400';
+            } else {
+                toastIcon.className = 'fa-solid fa-circle-exclamation text-rose-400';
+            }
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('vocab_words', JSON.stringify(words));
+            updateCounts();
+        }
+
+        function updateCounts() {
+            document.getElementById('word-count-badge').textContent = words.length;
+            document.getElementById('total-count').textContent = words.length;
+        }
+
+        function addWord(event) {
+            event.preventDefault();
+            const engInput = document.getElementById('eng-input');
+            const araInput = document.getElementById('ara-input');
+
+            const engVal = engInput.value.trim();
+            const araVal = araInput.value.trim();
+
+            if (!engVal || !araVal) return;
+
+            const exists = words.some(w => w.eng.toLowerCase() === engVal.toLowerCase());
+            if (exists) {
+                showToast('هذه الكلمة موجودة مسبقاً في القائمة', 'error');
+                return;
+            }
+
+            const newWord = {
+                id: Date.now().toString(),
+                eng: engVal,
+                ara: araVal
+            };
+
+            words.unshift(newWord);
+            saveToLocalStorage();
+            renderWords();
+
+            engInput.value = '';
+            araInput.value = '';
+            showToast('تمت إضافة الكلمة بنجاح');
+        }
+
+        function deleteWord(id) {
+            words = words.filter(w => w.id !== id);
+            saveToLocalStorage();
+            renderWords();
+            showToast('تم حذف الكلمة بنجاح');
+        }
+
+        function clearAllWords() {
+            if (words.length === 0) return;
+            if (confirm('هل أنت متأكد من مسح جميع الكلمات المحفوظة؟')) {
+                words = [];
+                saveToLocalStorage();
+                renderWords();
+                showToast('تم مسح جميع الكلمات');
+            }
+        }
+
+        function renderWords() {
+            const grid = document.getElementById('words-grid');
+            const emptyState = document.getElementById('empty-state');
+            const searchVal = document.getElementById('search-input').value.toLowerCase();
+
+            const filteredWords = words.filter(w => 
+                w.eng.toLowerCase().includes(searchVal) || w.ara.includes(searchVal)
+            );
+
+            grid.innerHTML = '';
+
+            if (filteredWords.length === 0) {
+                emptyState.classList.remove('hidden');
+                grid.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.classList.remove('hidden');
+
+            filteredWords.forEach(word => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 dark:bg-surface-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between transition-all group";
+                card.innerHTML = `
+                    <div class="space-y-0.5">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm group-hover:text-brand-500 transition-colors" dir="ltr">${escapeHtml(word.eng)}</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 font-semibold">${escapeHtml(word.ara)}</p>
+                    </div>
+                    <button onclick="deleteWord('${word.id}')" title="حذف الكلمة" class="w-8 h-8 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        function startQuiz() {
+            if (words.length < 2) {
+                showToast('يجب أن تحتوي القائمة على كلمتين على الأقل لبدء الاختبار', 'error');
+                switchVocabTab('manage');
+                return;
+            }
+
+            const shuffled = [...words].sort(() => 0.5 - Math.random());
+            const quizLength = Math.min(shuffled.length, 5);
+            currentQuizQuestions = shuffled.slice(0, quizLength);
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('quiz-results-screen').classList.add('hidden');
+            document.getElementById('quiz-question-screen').classList.remove('hidden');
+            document.getElementById('quiz-progress-indicator').classList.remove('hidden');
+            document.getElementById('quiz-footer').classList.remove('hidden');
+            document.getElementById('total-q-num').textContent = currentQuizQuestions.length;
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            isAnswerSubmitted = false;
+            document.getElementById('next-question-btn').classList.add('hidden');
+            document.getElementById('current-q-num').textContent = currentQuestionIndex + 1;
+
+            const qObj = currentQuizQuestions[currentQuestionIndex];
+            document.getElementById('question-word').textContent = qObj.eng;
+
+            const incorrectOptions = words
+                .filter(w => w.id !== qObj.id)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map(w => w.ara);
+
+            const options = [...incorrectOptions, qObj.ara].sort(() => 0.5 - Math.random());
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-surface-850 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs text-center hover:border-brand-500 transition-all flex items-center justify-between px-5";
+                btn.innerHTML = `<span>${escapeHtml(opt)}</span><span class="w-5 h-5 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px] text-transparent indicator-dot">●</span>`;
+                btn.onclick = () => selectAnswer(opt, qObj.ara, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedOpt, correctOpt, btnElement) {
+            if (isAnswerSubmitted) return;
+            isAnswerSubmitted = true;
+
+            const allButtons = document.getElementById('quiz-options').children;
+            
+            if (selectedOpt === correctOpt) {
+                score++;
+                btnElement.className = "w-full p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold text-xs text-center flex items-center justify-between px-5 shadow-sm";
+                btnElement.querySelector('.indicator-dot').className = "w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] indicator-dot";
+                btnElement.querySelector('.indicator-dot').innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                btnElement.className = "w-full p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-500 text-rose-800 dark:text-rose-300 font-bold text-xs text-center flex items-center justify-between px-5 shadow-sm";
+                btnElement.querySelector('.indicator-dot').className = "w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px] indicator-dot";
+                btnElement.querySelector('.indicator-dot').innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+                for (let btn of allButtons) {
+                    if (btn.textContent.trim().includes(correctOpt)) {
+                        btn.className = "w-full p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold text-xs text-center flex items-center justify-between px-5 shadow-sm";
+                    }
+                }
+            }
+
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.classList.remove('hidden');
+            if (currentQuestionIndex === currentQuizQuestions.length - 1) {
+                nextBtn.innerHTML = 'عرض النتيجة النهائية <i class="fa-solid fa-flag-checkered mr-1"></i>';
+            } else {
+                nextBtn.innerHTML = 'السؤال التالي <i class="fa-solid fa-arrow-left mr-1"></i>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuizQuestions.length) {
+                loadQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            document.getElementById('quiz-question-screen').classList.add('hidden');
+            document.getElementById('quiz-progress-indicator').classList.add('hidden');
+            document.getElementById('quiz-footer').classList.add('hidden');
+            
+            const resultsScreen = document.getElementById('quiz-results-screen');
+            resultsScreen.classList.remove('hidden');
+
+            const totalQ = currentQuizQuestions.length;
+            const percentage = (score / totalQ) * 100;
+            
+            document.getElementById('final-score-text').textContent = `${score} من ${totalQ}`;
+
+            const iconContainer = document.getElementById('result-icon-container');
+            const resultIcon = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            const resultSubtitle = document.getElementById('result-subtitle');
+
+            if (percentage >= 80) {
+                iconContainer.className = "w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 flex items-center justify-center mx-auto text-2xl shadow-md";
+                resultIcon.className = "fa-solid fa-trophy";
+                resultTitle.textContent = "أداء رائع وممتاز";
+                resultSubtitle.textContent = "لديك حصيلة لغوية ممتازة واستيعاب عالٍ للكلمات.";
+            } else if (percentage >= 50) {
+                iconContainer.className = "w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-600 flex items-center justify-center mx-auto text-2xl shadow-md";
+                resultIcon.className = "fa-solid fa-medal";
+                resultTitle.textContent = "جيد جداً، استمر في التدرب";
+                resultSubtitle.textContent = "أنت على الطريق الصحيح، قم بمراجعة الكلمات لتتحسن أكثر.";
+            } else {
+                iconContainer.className = "w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-900/50 text-rose-600 flex items-center justify-center mx-auto text-2xl shadow-md";
+                resultIcon.className = "fa-solid fa-book-bookmark";
+                resultTitle.textContent = "تحتاج للمزيد من المراجعة";
+                resultSubtitle.textContent = "لا تقلق، كرر الاختبار بعد مراجعة قائمة الكلمات المحفوظة.";
+            }
         }
 
         // Subject Progress Tracker Methods
@@ -1078,61 +1556,6 @@
             });
         }
 
-        // Smart Scheduler Calculator
-        function calculateExamSchedule() {
-            const subjectKey = document.getElementById('schedule-subject').value;
-            const targetDateVal = document.getElementById('schedule-date').value;
-
-            if (!targetDateVal) {
-                alert('يرجى اختيار تاريخ الامتحان الحقيقي أولاً.');
-                return;
-            }
-
-            const targetDate = new Date(targetDateVal);
-            const today = new Date();
-            const diffTime = targetDate - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            if (diffDays <= 0) {
-                alert('يرجى اختيار تاريخ في المستقبل.');
-                return;
-            }
-
-            const subject = curriculumData[subjectKey];
-            const remainingTopics = subject.topics.filter(t => !state.completedTopics.includes(t.id));
-
-            const resultContainer = document.getElementById('schedule-result');
-            const detailsDiv = document.getElementById('schedule-details');
-            resultContainer.classList.remove('hidden');
-
-            if (remainingTopics.length === 0) {
-                detailsDiv.innerHTML = `<p class="text-green-500 font-bold">عظيم جداً! لقد أكملت جميع مواضيع ${subject.title} بالفعل!</p>`;
-                return;
-            }
-
-            const topicsPerDay = (remainingTopics.length / diffDays).toFixed(1);
-
-            let html = `
-                <div class="p-3 bg-brand-500/10 border border-brand-500/20 rounded-xl text-brand-600 dark:text-brand-400 font-bold">
-                    المتبقي للامتحان: ${diffDays} يوم | عدد المواضيع المتبقية: ${remainingTopics.length} موضوع | المعدل المطلوب: ${topicsPerDay} موضوع/يوم
-                </div>
-                <div class="space-y-2 pt-2">
-            `;
-
-            remainingTopics.forEach((topic, idx) => {
-                const dayNum = Math.floor(idx / (topicsPerDay || 1)) + 1;
-                const slot = idx % 2 === 0 ? "الفترة الصباحية ☀️" : "الفترة المسائية 🌙";
-                html += `
-                    <div class="p-2.5 bg-slate-50 dark:bg-surface-950 rounded-lg flex items-center justify-between border border-slate-200 dark:border-slate-800">
-                        <span>اليوم ${dayNum} - ${slot}: <strong class="text-slate-800 dark:text-slate-200">${topic.title}</strong></span>
-                    </div>
-                `;
-            });
-
-            html += `</div>`;
-            detailsDiv.innerHTML = html;
-        }
-
         // Pomodoro Progressive Logic
         function setPomodoroLevel(lvl) {
             pomoState.level = lvl;
@@ -1160,11 +1583,11 @@
             if (pomoState.isRunning) {
                 clearInterval(pomoState.timerInterval);
                 pomoState.isRunning = false;
-                btn.innerText = "استئناف الدراسة 🚀";
+                btn.innerText = "استئناف الدراسة";
                 btn.className = "bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-brand-600/30 transition-all";
             } else {
                 pomoState.isRunning = true;
-                btn.innerText = "إيقاف مؤقت ⏸️";
+                btn.innerText = "إيقاف مؤقت";
                 btn.className = "bg-amber-600 hover:bg-amber-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-amber-600/30 transition-all";
 
                 pomoState.timerInterval = setInterval(() => {
@@ -1175,24 +1598,23 @@
                         clearInterval(pomoState.timerInterval);
                         pomoState.isRunning = false;
                         
-                        // Switch mode
                         pomoState.isStudyMode = !pomoState.isStudyMode;
                         const lvlConfig = pomodoroLevels[pomoState.level];
                         pomoState.secondsLeft = (pomoState.isStudyMode ? lvlConfig.study : lvlConfig.break) * 60;
 
                         const badge = document.getElementById('pomo-mode-badge');
                         if (pomoState.isStudyMode) {
-                            badge.innerText = "فترة التركيز والدراسة 🧠";
+                            badge.innerText = "فترة التركيز والدراسة";
                             badge.className = "text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2";
-                            alert("انتهت الاستراحة! حان وقت التركيز والدراسة 🚀");
+                            alert("انتهت الاستراحة! حان وقت التركيز والدراسة");
                         } else {
-                            badge.innerText = "فترة الاستراحة والراحة ☕";
+                            badge.innerText = "فترة الاستراحة والراحة";
                             badge.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-2";
-                            alert("أحسنت! أتممت فترة التركيز، حان وقت الاستراحة ☕");
+                            alert("أحسنت! أتممت فترة التركيز، حان وقت الاستراحة");
                         }
 
                         updatePomodoroDisplay();
-                        btn.innerText = "بدء المرحلة التالية 🚀";
+                        btn.innerText = "بدء المرحلة التالية";
                     }
                 }, 1000);
             }
@@ -1207,11 +1629,11 @@
             pomoState.secondsLeft = lvlConfig.study * 60;
 
             const badge = document.getElementById('pomo-mode-badge');
-            badge.innerText = "فترة التركيز والدراسة 🧠";
+            badge.innerText = "فترة التركيز والدراسة";
             badge.className = "text-xs font-bold text-brand-600 dark:text-brand-400 block mb-2";
 
             const btn = document.getElementById('pomo-start-btn');
-            btn.innerText = "بدء الدراسة 🚀";
+            btn.innerText = "بدء الدراسة";
             btn.className = "bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-brand-600/30 transition-all";
 
             updatePomodoroDisplay();
