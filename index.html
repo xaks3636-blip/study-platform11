@@ -114,7 +114,7 @@
 
             <div class="space-y-2">
                 <h1 class="text-2xl font-black text-slate-900 dark:text-white">منصة أحمد بن علي التعليمية</h1>
-                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">منصتك الشاملة لمتابعة الدروس، إدارة الخطط الدراسية المتعددة، تتبع التقدم، وحفظ المفردات.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">منصتك الشاملة لمتابعة الدروس، إدارة الخطط الدراسية، حائط التركيز الحي، وحفظ المفردات.</p>
             </div>
 
             <button onclick="enterPlatform()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2 text-sm">
@@ -146,15 +146,23 @@
                     <!-- Platform Navigation Tabs -->
                     <div class="flex items-center gap-1 bg-slate-100 dark:bg-surface-800 p-1 rounded-xl text-xs font-bold overflow-x-auto">
                         <button id="nav-btn-yt" onclick="switchMainTab('yt')" class="px-3 py-1.5 rounded-lg transition-all bg-brand-600 text-white shadow">الدروس</button>
+                        <button id="nav-btn-focus" onclick="switchMainTab('focus')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">حائط التركيز</button>
                         <button id="nav-btn-planner" onclick="switchMainTab('planner')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">إدارة الخطط</button>
                         <button id="nav-btn-vocab" onclick="switchMainTab('vocab')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">المفردات</button>
                         <button id="nav-btn-progress" onclick="switchMainTab('progress')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">تتبع المنهج</button>
                         <button id="nav-btn-pomodoro" onclick="switchMainTab('pomodoro')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-brand-500">بومودورو</button>
                     </div>
 
-                    <!-- Global Flexible Search & Actions -->
+                    <!-- Global Actions & External Links -->
                     <div class="flex items-center space-x-2 space-x-reverse shrink-0">
-                        <div class="relative hidden md:block w-36 lg:w-48">
+                        <!-- Direct Button to External Ministerial Questions Website -->
+                        <a href="https://web.zabeeb.app/" target="_blank" rel="noopener noreferrer" class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-md shrink-0" title="الانتقال لموقع الأسئلة الوزارية">
+                            <i class="fa-solid fa-file-signature"></i>
+                            <span class="hidden md:inline">الأسئلة الوزارية</span>
+                            <span class="md:hidden">الوزاريات</span>
+                        </a>
+
+                        <div class="relative hidden xl:block w-36 lg:w-44">
                             <input type="text" id="global-search" placeholder="بحث عن محاضرة..." class="w-full bg-slate-50 dark:bg-surface-950 text-xs text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg pr-8 pl-3 py-1.5 focus:outline-none focus:border-brand-500 transition-colors">
                             <i class="fa-solid fa-search absolute right-2.5 top-2.5 text-slate-400 text-xs"></i>
                         </div>
@@ -165,7 +173,7 @@
                             <svg id="icon-moon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                         </button>
 
-                        <button id="btn-add-channel" class="bg-brand-600 hover:bg-brand-500 text-white px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 shadow-md">
+                        <button id="btn-add-channel" class="bg-brand-600 hover:bg-brand-500 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shadow-md shrink-0">
                             <i class="fa-solid fa-plus"></i>
                             <span class="hidden sm:inline">إضافة قناة</span>
                             <span class="sm:hidden">إضافة</span>
@@ -210,10 +218,16 @@
                             <h2 id="active-video-title" class="text-xs sm:text-base font-bold text-slate-900 dark:text-slate-100 line-clamp-2">لم يتم تحديد فيديو</h2>
                             <p id="active-video-channel" class="text-[11px] sm:text-xs text-brand-600 dark:text-brand-500 mt-0.5 sm:mt-1 font-medium">-</p>
                         </div>
-                        <button id="btn-toggle-complete" class="bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0">
-                            <i class="fa-solid fa-check"></i>
-                            <span id="complete-btn-text">تحديد كمكتمل</span>
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <button id="btn-toggle-watch-later" class="bg-slate-200 dark:bg-surface-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0">
+                                <i class="fa-regular fa-clock"></i>
+                                <span id="watch-later-btn-text">حفظ للمشاهدة لاحقاً</span>
+                            </button>
+                            <button id="btn-toggle-complete" class="bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0">
+                                <i class="fa-solid fa-check"></i>
+                                <span id="complete-btn-text">تحديد كمكتمل</span>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
@@ -249,6 +263,9 @@
                             <button data-tab="feed" class="tab-btn active px-3 py-1.5 rounded-lg bg-brand-600 text-white transition-all whitespace-nowrap">الرئيسية</button>
                             <button data-tab="videos" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الفيديوهات</button>
                             <button data-tab="playlists" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">قوائم التشغيل</button>
+                            <button data-tab="watchlater" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap flex items-center gap-1.5">
+                                <i class="fa-regular fa-clock"></i> المشاهدة لاحقاً
+                            </button>
                             <button data-tab="shorts" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">الشورتس</button>
                             <button data-tab="completed" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-surface-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all whitespace-nowrap">المكتملة</button>
                         </div>
@@ -273,6 +290,91 @@
                     </div>
                 </section>
             </main>
+        </div>
+
+        <!-- NEW VIEW: LIVE FOCUS & PRODUCTIVITY FEED (حائط التركيز والإنتاجية الحي) -->
+        <div id="view-focus" class="hidden max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full space-y-6 fade-in">
+            <!-- Summary Stats Banner -->
+            <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 text-center md:text-right">
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">إجمالي التركيز اليومي</span>
+                    <h3 id="focus-total-hours" class="text-2xl font-black text-brand-600 dark:text-brand-400">00:00 ساعة</h3>
+                    <p class="text-[11px] text-slate-500">ساعات دراسة صافية وموثقة</p>
+                </div>
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">المادة الأكثر تركيزاً</span>
+                    <h3 id="focus-top-subject" class="text-2xl font-black text-slate-800 dark:text-slate-100">الرياضيات</h3>
+                    <p class="text-[11px] text-slate-500">استناداً لجميع الجلسات المكتملة</p>
+                </div>
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">ساعات ذروة النشاط</span>
+                    <h3 id="focus-peak-time" class="text-2xl font-black text-emerald-600 dark:text-emerald-400">الفترة المسائية</h3>
+                    <p class="text-[11px] text-slate-500">أفضل أداء واستيعاب علمي</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Productivity Chart & Activity Slots -->
+                <div class="lg:col-span-2 bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white">توزيع ذروة النشاط خلال فترات اليوم</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">مخطط إحصائي زمني لساعات دراستك الحقيقية</p>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart Visualizer -->
+                    <div class="space-y-3 pt-2">
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>الفترة الصباحية (06:00 ص - 12:00 ظ)</span>
+                                <span id="bar-val-morning">2.5 ساعة</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-surface-800 h-3 rounded-full overflow-hidden">
+                                <div id="bar-fill-morning" class="bg-brand-600 h-full rounded-full transition-all duration-500" style="width: 60%"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>فترة الظهيرة (12:00 ظ - 05:00 م)</span>
+                                <span id="bar-val-afternoon">1.2 ساعة</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-surface-800 h-3 rounded-full overflow-hidden">
+                                <div id="bar-fill-afternoon" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 30%"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>الفترة المسائية (05:00 م - 10:00 م)</span>
+                                <span id="bar-val-evening">3.8 ساعة</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-surface-800 h-3 rounded-full overflow-hidden">
+                                <div id="bar-fill-evening" class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 85%"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>فترة الليل (10:00 م - 02:00 ص)</span>
+                                <span id="bar-val-night">0.5 ساعة</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-surface-800 h-3 rounded-full overflow-hidden">
+                                <div id="bar-fill-night" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Focus Stream Log -->
+                <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3">سجل الجلسات المكتملة حديثاً</h3>
+                    <div id="focus-live-feed-list" class="space-y-3 max-h-80 overflow-y-auto pr-1 text-xs">
+                        <!-- Feed items rendered dynamically -->
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- VIEW 2: MULTI-PLAN STUDY & EXAM MANAGER (NEW POWERFUL PLANNER) -->
@@ -522,7 +624,7 @@
             </div>
         </div>
 
-        <!-- VIEW 5: PROGRESSIVE POMODORO TIMER -->
+        <!-- VIEW 5: PROGRESSIVE POMODORO TIMER & FOCUS INTEGRATION -->
         <div id="view-pomodoro" class="hidden max-w-2xl mx-auto px-3 sm:px-6 lg:px-8 py-8 w-full space-y-6 fade-in text-center">
             <div class="bg-white dark:bg-surface-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
                 
@@ -532,6 +634,20 @@
                     </span>
                     <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">مؤقت بومودورو التدريجي</h2>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">تدرج في وقت الدراسة والتركيز خطوة بخطوة للوصول إلى هدف الـ 50 دقيقة دراسة و10 دقائق استراحة بسهولة وبدون إجهاد.</p>
+                </div>
+
+                <!-- Subject Selection for Focus Feed -->
+                <div class="text-right">
+                    <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300">حدد المادة التي تدرسها الآن (لتسجيلها في حائط التركيز الحي):</label>
+                    <select id="pomo-subject-select" class="w-full bg-slate-50 dark:bg-surface-950 border border-slate-200 dark:border-slate-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-brand-600 font-bold">
+                        <option value="الرياضيات">الرياضيات</option>
+                        <option value="الفيزياء">الفيزياء</option>
+                        <option value="الكيمياء">الكيمياء</option>
+                        <option value="اللغة العربية">اللغة العربية</option>
+                        <option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+                        <option value="الأحياء / الاقتصاد">الأحياء / الاقتصاد</option>
+                        <option value="التربية الإسلامية">التربية الإسلامية</option>
+                    </select>
                 </div>
 
                 <!-- Level Selector -->
@@ -682,8 +798,10 @@
             apiKey: "AIzaSyAi-Xxn39YN3tKb0_5Z2P3qCiRAaBFF6Y8",
             channels: JSON.parse(localStorage.getItem('yt_study_channels') || '[]'),
             completedVideos: JSON.parse(localStorage.getItem('yt_study_completed') || '[]'),
+            watchLaterVideos: JSON.parse(localStorage.getItem('yt_study_watch_later') || '[]'),
             completedTopics: JSON.parse(localStorage.getItem('completed_study_topics') || '[]'),
             studyPlans: JSON.parse(localStorage.getItem('multi_study_plans') || '[]'),
+            focusSessions: JSON.parse(localStorage.getItem('focus_live_sessions') || '[]'),
             selectedChannelId: null,
             activeTab: 'feed',
             activeSubjectKey: 'grammar',
@@ -757,7 +875,9 @@
             nextVideoTitle: document.getElementById('next-video-title'),
             btnPlayNext: document.getElementById('btn-play-next'),
             btnToggleComplete: document.getElementById('btn-toggle-complete'),
-            completeBtnText: document.getElementById('complete-btn-text')
+            completeBtnText: document.getElementById('complete-btn-text'),
+            btnToggleWatchLater: document.getElementById('btn-toggle-watch-later'),
+            watchLaterBtnText: document.getElementById('watch-later-btn-text')
         };
 
         // Navigation Switcher
@@ -772,10 +892,11 @@
             renderWords();
             updateCounts();
             renderStudyPlans();
+            renderFocusFeed();
         }
 
         function switchMainTab(tabKey) {
-            ['yt', 'planner', 'vocab', 'progress', 'pomodoro'].forEach(key => {
+            ['yt', 'focus', 'planner', 'vocab', 'progress', 'pomodoro'].forEach(key => {
                 const el = document.getElementById(`view-${key}`);
                 const btn = document.getElementById(`nav-btn-${key}`);
                 if(el) el.classList.add('hidden');
@@ -789,6 +910,8 @@
             
             if(tabKey === 'planner') {
                 renderStudyPlans();
+            } else if (tabKey === 'focus') {
+                renderFocusFeed();
             }
         }
 
@@ -800,6 +923,7 @@
             elements.btnLoadMore.addEventListener('click', () => fetchMoreContent());
             elements.btnThemeToggle.addEventListener('click', toggleTheme);
             elements.btnToggleComplete.addEventListener('click', toggleCompleteActiveVideo);
+            elements.btnToggleWatchLater.addEventListener('click', toggleWatchLaterActiveVideo);
 
             document.querySelectorAll('.btn-close-modal').forEach(btn => {
                 btn.addEventListener('click', () => closeModal(elements.modalAddChannel));
@@ -867,7 +991,106 @@
             elements.formAddChannel.reset();
         }
 
-        // --- STUDY PLANNER & EXAM MANAGER LOGIC ---
+        // --- LIVE FOCUS & PRODUCTIVITY FEED LOGIC ---
+        function recordFocusSession(subject, durationMinutes) {
+            const hour = new Date().getHours();
+            let period = 'morning';
+            if (hour >= 12 && hour < 17) period = 'afternoon';
+            else if (hour >= 17 && hour < 22) period = 'evening';
+            else if (hour >= 22 || hour < 6) period = 'night';
+
+            const newSession = {
+                id: 'session_' + Date.now(),
+                subject: subject,
+                durationMinutes: durationMinutes,
+                period: period,
+                timestamp: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            state.focusSessions.unshift(newSession);
+            localStorage.setItem('focus_live_sessions', JSON.stringify(state.focusSessions));
+            renderFocusFeed();
+        }
+
+        function renderFocusFeed() {
+            let totalMins = 0;
+            const subjectCounts = {};
+            const periodMins = { morning: 0, afternoon: 0, evening: 0, night: 0 };
+
+            state.focusSessions.forEach(s => {
+                totalMins += s.durationMinutes;
+                subjectCounts[s.subject] = (subjectCounts[s.subject] || 0) + s.durationMinutes;
+                periodMins[s.period] = (periodMins[s.period] || 0) + s.durationMinutes;
+            });
+
+            // Hours & Mins
+            const totalHours = (totalMins / 60).toFixed(1);
+            document.getElementById('focus-total-hours').textContent = `${totalHours} ساعة`;
+
+            // Top Subject
+            let topSub = 'الرياضيات';
+            let maxMins = 0;
+            Object.keys(subjectCounts).forEach(sub => {
+                if(subjectCounts[sub] > maxMins) {
+                    maxMins = subjectCounts[sub];
+                    topSub = sub;
+                }
+            });
+            document.getElementById('focus-top-subject').textContent = topSub;
+
+            // Peak Time
+            let peakP = 'evening';
+            let maxPMins = 0;
+            Object.keys(periodMins).forEach(p => {
+                if(periodMins[p] > maxPMins) {
+                    maxPMins = periodMins[p];
+                    peakP = p;
+                }
+            });
+            const periodNames = { morning: 'الفترة الصباحية', afternoon: 'فترة الظهيرة', evening: 'الفترة المسائية', night: 'فترة الليل' };
+            document.getElementById('focus-peak-time').textContent = periodNames[peakP] || 'الفترة المسائية';
+
+            // Bars calculation
+            const grandTotal = Math.max(1, totalMins);
+            document.getElementById('bar-val-morning').textContent = `${(periodMins.morning / 60).toFixed(1)} ساعة`;
+            document.getElementById('bar-fill-morning').style.width = `${Math.min(100, Math.round((periodMins.morning / grandTotal) * 100))}%`;
+
+            document.getElementById('bar-val-afternoon').textContent = `${(periodMins.afternoon / 60).toFixed(1)} ساعة`;
+            document.getElementById('bar-fill-afternoon').style.width = `${Math.min(100, Math.round((periodMins.afternoon / grandTotal) * 100))}%`;
+
+            document.getElementById('bar-val-evening').textContent = `${(periodMins.evening / 60).toFixed(1)} ساعة`;
+            document.getElementById('bar-fill-evening').style.width = `${Math.min(100, Math.round((periodMins.evening / grandTotal) * 100))}%`;
+
+            document.getElementById('bar-val-night').textContent = `${(periodMins.night / 60).toFixed(1)} ساعة`;
+            document.getElementById('bar-fill-night').style.width = `${Math.min(100, Math.round((periodMins.night / grandTotal) * 100))}%`;
+
+            // Feed list
+            const feedContainer = document.getElementById('focus-live-feed-list');
+            feedContainer.innerHTML = '';
+
+            if (state.focusSessions.length === 0) {
+                feedContainer.innerHTML = `<p class="text-slate-400 text-center py-4">لا توجد جلسات دراسية موثقة اليوم. استخدم مؤقت بومودورو لتسجيل أول جلسة.</p>`;
+                return;
+            }
+
+            state.focusSessions.slice(0, 8).forEach(s => {
+                const item = document.createElement('div');
+                item.className = "bg-slate-50 dark:bg-surface-950 p-3 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between";
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                        <span class="font-bold text-slate-800 dark:text-slate-200">${escapeHtml(s.subject)}</span>
+                    </div>
+                    <div class="text-[10px] text-slate-400">
+                        <span class="font-bold text-brand-600 dark:text-brand-400 ml-2">${s.durationMinutes} دقيقة</span>
+                        <span>${s.timestamp}</span>
+                    </div>
+                `;
+                feedContainer.appendChild(item);
+            });
+        }
+
+        // --- STUDY PLANNER LOGIC ---
         function openNewPlanModal() {
             document.getElementById('modal-new-plan').classList.remove('hidden');
         }
@@ -1335,6 +1558,19 @@
             renderCurrentGrid();
         }
 
+        function toggleWatchLaterActiveVideo() {
+            if (!state.activeVideoId) return;
+            const index = state.watchLaterVideos.indexOf(state.activeVideoId);
+            if (index > -1) {
+                state.watchLaterVideos.splice(index, 1);
+            } else {
+                state.watchLaterVideos.push(state.activeVideoId);
+            }
+            localStorage.setItem('yt_study_watch_later', JSON.stringify(state.watchLaterVideos));
+            updateWatchLaterButtonState();
+            renderCurrentGrid();
+        }
+
         function updateCompleteButtonState() {
             const isCompleted = state.completedVideos.includes(state.activeVideoId);
             if (isCompleted) {
@@ -1343,6 +1579,17 @@
             } else {
                 elements.btnToggleComplete.className = "bg-slate-200 dark:bg-surface-800 hover:bg-brand-600 hover:text-white text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0";
                 elements.completeBtnText.innerText = "تحديد كمكتمل";
+            }
+        }
+
+        function updateWatchLaterButtonState() {
+            const isWatchLater = state.watchLaterVideos.includes(state.activeVideoId);
+            if (isWatchLater) {
+                elements.btnToggleWatchLater.className = "bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 shadow";
+                elements.watchLaterBtnText.innerText = "محفوظ لاحقاً ✓";
+            } else {
+                elements.btnToggleWatchLater.className = "bg-slate-200 dark:bg-surface-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0";
+                elements.watchLaterBtnText.innerText = "حفظ للمشاهدة لاحقاً";
             }
         }
 
@@ -1355,6 +1602,8 @@
             else if (state.activeTab === 'playlists') listToRender = state.playlists;
             else if (state.activeTab === 'completed') {
                 listToRender = state.videos.filter(v => state.completedVideos.includes(v.id));
+            } else if (state.activeTab === 'watchlater') {
+                listToRender = state.videos.filter(v => state.watchLaterVideos.includes(v.id));
             }
 
             const query = state.globalSearchQuery;
@@ -1397,13 +1646,18 @@
             filtered.forEach(video => {
                 const isPlaying = state.activeVideoId === video.id;
                 const isCompleted = state.completedVideos.includes(video.id);
+                const isWatchLater = state.watchLaterVideos.includes(video.id);
+
                 const card = document.createElement('div');
                 card.className = `bg-white dark:bg-surface-900 rounded-xl overflow-hidden border ${isPlaying ? 'border-brand-500 shadow-lg' : 'border-slate-200 dark:border-slate-800'} transition-all cursor-pointer flex flex-col group shadow-sm`;
 
                 card.innerHTML = `
                     <div class="relative ${state.activeTab === 'shorts' ? 'aspect-[9/16] max-h-60 sm:max-h-72 mx-auto w-full' : 'aspect-video'} bg-slate-950 overflow-hidden">
                         <img src="${video.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        ${isCompleted ? '<span class="absolute top-2 right-2 bg-green-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">مكتمل</span>' : ''}
+                        <div class="absolute top-2 right-2 flex flex-col gap-1">
+                            ${isCompleted ? '<span class="bg-green-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">مكتمل</span>' : ''}
+                            ${isWatchLater ? '<span class="bg-amber-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow">لاحقاً</span>' : ''}
+                        </div>
                     </div>
                     <div class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between space-y-2">
                         <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-brand-500 transition-colors">${video.title}</h4>
@@ -1430,6 +1684,7 @@
             elements.activeVideoChannel.innerText = `المدرس/المادة: ${teacherName}`;
 
             updateCompleteButtonState();
+            updateWatchLaterButtonState();
             renderCurrentGrid();
             elements.playerSection.scrollIntoView({ behavior: 'smooth' });
         }
@@ -1813,8 +2068,15 @@
                         clearInterval(pomoState.timerInterval);
                         pomoState.isRunning = false;
                         
-                        pomoState.isStudyMode = !pomoState.isStudyMode;
                         const lvlConfig = pomodoroLevels[pomoState.level];
+                        
+                        if (pomoState.isStudyMode) {
+                            // Record study session to live focus feed
+                            const selectedSubject = document.getElementById('pomo-subject-select').value;
+                            recordFocusSession(selectedSubject, lvlConfig.study);
+                        }
+
+                        pomoState.isStudyMode = !pomoState.isStudyMode;
                         pomoState.secondsLeft = (pomoState.isStudyMode ? lvlConfig.study : lvlConfig.break) * 60;
 
                         const badge = document.getElementById('pomo-mode-badge');
@@ -1825,7 +2087,7 @@
                         } else {
                             badge.innerText = "فترة الاستراحة والراحة";
                             badge.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-2";
-                            alert("أحسنت! أتممت فترة التركيز، حان وقت الاستراحة");
+                            alert("أحسنت! أتممت فترة التركيز، وتم تسجيل الجلسة في حائط التركيز الحي.");
                         }
 
                         updatePomodoroDisplay();
